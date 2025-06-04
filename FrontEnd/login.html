@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mawi - Iniciar sesión</title>
+  <link rel="stylesheet" href="Estilos/styles.css" />
+</head>
+<body>
+  <div class="centered-page">
+    <div class="card">
+      <h2 class="subtitle">Iniciar sesión</h2>
+      <a href="CrearCuenta/datos-personales.html" class="small-link">¿Crear cuenta?</a>
+
+      <form class="form" id="loginForm">
+        <label for="email" class="label">Correo electrónico</label>
+        <input type="email" id="email" placeholder="Escribe tu correo" class="input" required />
+
+        <label for="password" class="label">Contraseña</label>
+        <input type="password" id="password" placeholder="Escribe tu contraseña" class="input" required />
+
+        <a href="recuperarContraseña/recuperar.html" class="forgot-link">¿Has olvidado tu contraseña?</a>
+
+        <button type="submit" class="btn">Iniciar sesión</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  try {
+    const res = await fetch('http://localhost:3000/api/auth/login', {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({ email, password })   //  💡  password, no "contraseña"
+    });
+
+    const data = await res.json();
+    if (!res.ok) return alert(data.error);
+
+    /* guarda usuario + token */
+    localStorage.setItem('user', JSON.stringify(data.user));
+    localStorage.setItem('token', data.token);
+
+    /* redirige */
+    window.location.href = data.redirect;
+  } catch (err) {
+    console.error(err);
+    alert('Error al conectar con el servidor');
+  }
+});
+  </script>
+</body>
+</html>

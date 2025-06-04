@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Mawi</title>
+  <link rel="stylesheet" href="Estilos/styles.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="logo">Mawi</div>
+    <div id="user-info" class="user">Usuario</div>
+  </div>
+
+  <div class="dashboard-container">
+    <div class="card-group">
+      <div class="card-dashboard" onclick="location.href='Asistentes/Biomo/biomo.html'">
+        <h3>Asistente de Mi Biomo</h3>
+        <p>Consulta y sube nuevos datos de tu monitoreo.</p>
+      </div>
+
+      <div class="card-dashboard" onclick="location.href='Asistentes/Convocatorias/registro-1.html'">
+        <h3>Asistente de Convocatorias</h3>
+        <p>Participa en nuevas convocatorias y registra proyectos.</p>
+      </div>
+
+      <div class="card-dashboard" onclick="location.href='Asistentes/Anteproyectos/lista.html'">
+        <h3>Explorador de Anteproyectos</h3>
+        <p>Consulta las convocatorias activas y proyectos propuestos.</p>
+      </div>
+    </div>
+
+    <button class="btn" onclick="logout()">Cerrar sesión</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      document.getElementById('user-info').textContent = `${user.nombre} ${user.apellidos}`;
+    });
+
+    function logout() {
+      localStorage.removeItem('user');
+      window.location.href = 'index.html';
+    }
+  </script>
+
+</body>
+</html>

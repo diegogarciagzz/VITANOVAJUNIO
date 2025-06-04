@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../Estilos/styles.css">
+  <title>¿Con quién trabajas?</title>
+</head>
+<body>
+<div class="centered-page">
+  <div class="card">
+    <h2 class="subtitle">¿Con quién trabajas?</h2>
+    <form id="orgForm">
+      <label>Nombre de la organización*</label>
+      <input id="organizacion" class="input" required>
+      <label>Descripción*</label>
+      <textarea id="descripcion" maxlength="200" class="input" required></textarea>
+      <button class="btn">Guardar</button>
+    </form>
+  </div>
+</div>
+
+<script>
+orgForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  const body = {
+    organizacion            : organizacion.value,
+    descripcion_organizacion: descripcion.value
+  };
+
+  const res = await fetch('http://localhost:3000/api/users/profile', {
+    method : 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization : 'Bearer ' + localStorage.getItem('token')
+    },
+    body: JSON.stringify(body)
+  });
+  const data = await res.json();
+  if (!res.ok) return alert(data.error);
+
+  location.href = 'confirmacion-cuenta.html';
+});
+</script>
+</body>
+</html>

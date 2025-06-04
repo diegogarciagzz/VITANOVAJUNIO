@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asistente de Mi Biomo</title>
+  <link rel="stylesheet" href="../../Estilos/styles.css" />
+  <script defer>
+    function toggleSidebar() {
+      document.body.classList.toggle('menu-open');
+      const arrow = document.getElementById('arrow-toggle');
+      arrow.textContent = document.body.classList.contains('menu-open') ? '❮' : '❯';
+    }
+  </script>
+</head>
+<body class="dashboard">
+
+  <!-- Barra superior -->
+  <div class="topbar">
+    <div class="logo">Mawi</div>
+    <div class="user">Usuario</div>
+  </div>
+
+  <!-- Contenedor general -->
+  <div class="biomo-wrapper">
+
+    <!-- Flechita de abrir/cerrar -->
+    <button class="toggle-menu" onclick="toggleSidebar()" id="arrow-toggle">❯</button>
+
+    <!-- Sidebar oculta inicialmente -->
+    <aside class="sidebar">
+      <nav>
+        <ul>
+          <li><a href="../../dashboard.html">Inicio</a></li>
+          <li><a href="#">Asistente de Mi Biomo</a></li>
+          <li><a href="#">Asistente Explorador de Anteproyectos</a></li>
+          <li><a href="#">Asistente de Convocatorias</a></li>
+        </ul>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="support-button">📞 Contacta con el soporte</button>
+      </div>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="biomo-content">
+      <h2>Asistente de Mi Biomo</h2>
+      <p class="biomo-id">Biomo ID: 1234</p>
+
+      <div class="biomo-buttons">
+        <button class="btn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12v8m0 0l-4-4m4 4l4-4m0-4V4a2 2 0 00-2-2H6a2 2 0 00-2 2v8" />
+          </svg>
+          Subir Datos
+        </button>
+
+        <button class="btn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z" />
+          </svg>
+          Generar PDF
+        </button>
+      </div>
+
+      <div class="chatbox">
+        <input type="text" placeholder="Escribe..." />
+        <button>↑</button>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asistente de Convocatorias - Paso 2</title>
+  <link rel="stylesheet" href="../../Estilos/styles.css" />
+  <script defer>
+    function toggleSidebar() {
+      document.body.classList.toggle('menu-open');
+    }
+  </script>
+</head>
+<body class="dashboard">
+
+  <div class="topbar">
+    <div class="logo">Mawi</div>
+    <div class="user">Usuario</div>
+  </div>
+
+  <div class="biomo-wrapper">
+    <button class="toggle-menu" onclick="toggleSidebar()">&#10094;</button>
+
+    <aside class="sidebar">
+      <nav>
+        <ul>
+          <li><a href="../../dashboard.html">Inicio</a></li>
+          <li><a href="../Biomo/biomo.html">Asistente de Mi Biomo</a></li>
+          <li><a href="../Anteproyectos/anteproyectos.html">Asistente Explorador de Anteproyectos</a></li>
+          <li><a href="#">Asistente de Convocatorias</a></li>
+        </ul>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="support-button">📞 Contacta con el soporte</button>
+      </div>
+    </aside>
+
+    <main class="biomo-content">
+      <h2>Asistente de Convocatorias</h2>
+
+      <div class="form-group">
+        <label class="label">Región</label>
+        <input class="input" type="text" placeholder="¿En qué región se organiza el proyecto?" />
+
+        <label class="label">Organización</label>
+        <input class="input" type="text" placeholder="Inserta el nombre de tu organización" />
+
+        <label class="label">País o Zona Geográfica</label>
+        <input class="input" type="text" placeholder="¿Para qué lugar se plantea el proyecto?" />
+
+        <label class="label">Descripción</label>
+        <input class="input" type="text" placeholder="Descríbeme de qué va el proyecto" />
+
+        <a href="chat.html" class="btn">Guardar</a>
+
+        <div class="message-bot">
+          En base a esta información te puedo ayudar a desarrollar tu proyecto.
+        </div>
+        <div class="timestamp">10:12</div>
+      </div>
+
+      <div class="chatbox">
+        <input type="text" placeholder="Escribe..." />
+        <button>↑</button>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>
