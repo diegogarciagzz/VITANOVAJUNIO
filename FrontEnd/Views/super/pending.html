@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Solicitudes Pendientes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-6">
+
+  <h1 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+    <i data-feather="clock" class="w-6 h-6 text-green-500"></i>
+    Solicitudes Pendientes
+  </h1>
+
+  <div class="overflow-x-auto bg-gray-800 rounded-lg shadow">
+    <table class="min-w-full text-sm">
+      <thead class="bg-gray-700 text-left">
+        <tr>
+          <th class="py-3 px-4">Nombre</th>
+          <th class="py-3 px-4">Email</th>
+          <th class="py-3 px-4">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="pend" class="divide-y divide-gray-700"></tbody>
+    </table>
+  </div>
+
+  <script>
+    feather.replace();
+    const token = localStorage.getItem('token');
+
+    fetch('/api/super/pending',
+      { headers: { Authorization: 'Bearer ' + token } })
+      .then(r => r.json())
+      .then(loadPending)
+      .catch(() => alert('Error al cargar pendientes'));
+
+    function loadPending(arr) {
+      pend.innerHTML = arr.map(u => `
+        <tr class="hover:bg-gray-700">
+          <td class="py-2 px-4">${u.nombre}</td>
+          <td class="py-2 px-4">${u.email}</td>
+          <td class="py-2 px-4 flex gap-2">
+            <button onclick="approve(${u.id_usuario})"
+                    class="bg-green-700 hover:bg-green-800 text-xs px-3 py-1 rounded">
+              Aprobar
+            </button>
+            <button onclick="reject(${u.id_usuario})"
+                    class="bg-red-700 hover:bg-red-800 text-xs px-3 py-1 rounded">
+              Rechazar
+            </button>
+          </td>
+        </tr>`).join('');
+    }
+
+    function approve(id) {
+      fetch('/api/super/pending/' + id + '/approve', {
+        method: 'PATCH',
+        headers: { Authorization: 'Bearer ' + token }
+      })
+      .then(() => location.reload())
+      .catch(() => alert('Error al aprobar'));
+    }
+
+    function reject(id) {
+      if (!confirm('¿Rechazar / eliminar esta solicitud?')) return;
+      fetch('/api/super/users/' + id, {        // reutilizamos DELETE
+        method: 'DELETE',
+        headers: { Authorization: 'Bearer ' + token }
+      })
+      .then(() => location.reload())
+      .catch(() => alert('Error al rechazar'));
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cambio de contraseña – Mawi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <link rel="stylesheet" href="/FrontEnd/Estilos/perfil.css" />
+</head>
+<body class="bg-[#353535] flex flex-col min-h-screen">
+
+  <!-- NAVBAR -->
+  <header class="bg-gray-800 flex items-center justify-between h-14 px-6">
+    <div class="flex items-center gap-2">
+      <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+        <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/>
+        <circle cx="12" cy="12" r="2.5"/>
+      </svg>
+      <span class="font-semibold text-lg">Mawi</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="text-sm">EcoRanger</span>
+      <img src="../assets/avatar-placeholder.png"
+           class="w-8 h-8 rounded-full object-cover border-2 border-gray-700" />
+    </div>
+  </header>
+
+  <!-- MODAL CENTRAL -->
+  <main class="flex-1 flex items-center justify-center relative px-4">
+    <div class="perfil-card relative w-full max-w-md mt-4">
+
+      <!-- Botón cerrar -->
+      <button onclick="window.location.href='/FrontEnd/Perfil/perfil.html'"
+              class="absolute top-4 right-4 text-white hover:text-red-400 text-2xl font-bold"
+              title="Cerrar">
+        &times;
+      </button>
+
+      <!-- Título -->
+      <h2 class="text-3xl font-bold mb-4 text-center">Cambio de contraseña</h2>
+
+      <label>Nueva Contraseña</label>
+      <input type="password" placeholder="Escribe..." />
+
+      <label>Confirmar Contraseña</label>
+      <input type="password" placeholder="Escribe..." />
+
+      <!-- Confirmar -->
+      <button onclick="window.location.href='/FrontEnd/Perfil/perfil.html'"
+              class="btn-cambiar-pass mt-4" title="Confirmar cambio">
+        <i data-feather="check"></i>
+      </button>
+
+      <!-- Soporte -->
+      <button class="btn-soporte mt-4">
+        <i data-feather="phone"></i>
+        Contacta con el soporte
+      </button>
+
+    </div>
+  </main>
+
+  <script>
+    feather.replace();
+  </script>
+</body>
+</html>

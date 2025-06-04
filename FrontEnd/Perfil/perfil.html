@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil – EcoRanger</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <link rel="stylesheet" href="/FrontEnd/Estilos/perfil.css" />
+  <style>
+    .rotate-180 {
+      transform: rotate(180deg);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- NAVBAR -->
+  <header class="bg-gray-800 flex items-center justify-between h-14 px-6">
+    <div class="flex items-center gap-2">
+      <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+        <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/>
+        <circle cx="12" cy="12" r="2.5"/>
+      </svg>
+      <span class="font-semibold text-lg">Mawi</span>
+    </div>
+    <div class="flex items-center gap-2 cursor-pointer hover:opacity-80">
+      <span class="text-sm">EcoRanger</span>
+      <img src="../assets/avatar-placeholder.png" class="w-8 h-8 rounded-full object-cover border-2 border-gray-700" />
+    </div>
+  </header>
+
+  <div class="flex flex-grow overflow-hidden">
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="bg-gray-900 w-64 flex flex-col transition-all duration-200">
+      <button id="toggleSide" class="self-end mt-3 mr-2 p-1 rounded hover:bg-gray-700">
+        <i data-feather="chevron-left" class="w-4 h-4"></i>
+      </button>
+      <nav class="flex flex-col gap-4 mt-6 px-6 text-sm">
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="activity" class="w-4 h-4"></i>
+          <span>Asistente Biomo</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="file-text" class="w-4 h-4"></i>
+          <span>Nuevas Convocatorias</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="layers" class="w-4 h-4"></i>
+          <span>Explorador Anteproyectos</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="message-circle" class="w-4 h-4"></i>
+          <span>Chatbot</span>
+        </a>
+      </nav>
+      <button class="flex items-center gap-3 hover:text-red-400 py-2 px-6 mt-4">
+        <i data-feather="log-out" class="w-4 h-4"></i>
+        <span>Cerrar sesión</span>
+      </button>
+      <button class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500">
+        <i data-feather="phone" class="w-4 h-4 text-green-500"></i>
+        <span class="text-sm">Soporte</span>
+      </button>
+    </aside>
+
+    <!-- PERFIL -->
+    <main class="flex-1 overflow-y-auto flex justify-center">
+      <div class="perfil-card">
+        <h2 class="text-2xl font-semibold text-center">EcoRanger “Nombre”</h2>
+
+        <!-- Imagen de perfil y botón debajo -->
+        <div class="foto-perfil-wrapper">
+          <div class="foto-perfil">
+            <span class="text-4xl text-gray-600">+</span>
+          </div>
+          <button class="btn-editar-foto" title="Editar foto">
+            <i data-feather="edit-2"></i>
+          </button>
+        </div>
+
+        <label>Nombre</label>
+        <input type="text" placeholder="Escribe..." />
+
+        <label>Apellidos</label>
+        <input type="text" placeholder="Escribe..." />
+
+        <label>Nombre de la organización</label>
+        <input type="text" placeholder="Escribe..." />
+
+        <label>Descripción de la organización</label>
+        <input type="text" placeholder="Escribe..." />
+
+        <label>Contraseña</label>
+        <input type="password" placeholder="Escribe..." />
+
+        <!-- Botón que redirige -->
+        <a href="/FrontEnd/Perfil/perfil-cambiarcontraseña.html" class="btn-cambiar-pass mt-2" title="Cambiar contraseña">
+          <i data-feather="lock"></i>
+          Cambiar contraseña
+        </a>
+
+        <button class="btn-soporte mt-4">
+          <i data-feather="phone"></i>
+          Contacta con el soporte
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <!-- SCRIPT SIDEBAR -->
+  <script>
+    feather.replace();
+
+    const sidebar = document.getElementById("sidebar");
+    const toggleBtn = document.getElementById("toggleSide");
+    const arrowIcon = toggleBtn.querySelector("i");
+    const labels = sidebar.querySelectorAll("nav span, button span");
+
+    toggleBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("w-64");
+      sidebar.classList.toggle("w-16");
+      sidebar.classList.toggle("collapsed");
+
+      labels.forEach(label => {
+        label.classList.toggle("hidden");
+      });
+
+      arrowIcon.classList.toggle("rotate-180");
+    });
+  </script>
+</body>
+</html>

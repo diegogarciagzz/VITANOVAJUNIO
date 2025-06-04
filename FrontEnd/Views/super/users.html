@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Gestión de Usuarios</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-6">
+
+  <h1 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+    <i data-feather="shield" class="w-6 h-6 text-green-500"></i>
+    Gestión de Usuarios
+  </h1>
+
+  <div class="overflow-x-auto bg-gray-800 rounded-lg shadow">
+    <table class="min-w-full text-sm">
+      <thead class="bg-gray-700 text-left">
+        <tr>
+          <th class="py-3 px-4">ID</th>
+          <th class="py-3 px-4">Nombre</th>
+          <th class="py-3 px-4">Email</th>
+          <th class="py-3 px-4">Rol</th>
+          <th class="py-3 px-4">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="list" class="divide-y divide-gray-700"></tbody>
+    </table>
+  </div>
+
+  <script>
+    feather.replace();
+    const token = localStorage.getItem('token');
+
+    fetch('/api/super/users',
+      { headers: { Authorization: 'Bearer ' + token } })
+      .then(r => r.json())
+      .then(fillTable)
+      .catch(() => alert('Error al cargar usuarios'));
+
+    function fillTable(arr) {
+      list.innerHTML = arr.map(u => `
+        <tr class="hover:bg-gray-700">
+          <td class="py-2 px-4">${u.id_usuario}</td>
+          <td class="py-2 px-4">${u.nombre}</td>
+          <td class="py-2 px-4">${u.email}</td>
+          <td class="py-2 px-4">
+            <select data-id="${u.id_usuario}"
+                    class="bg-gray-800 border border-gray-600 rounded px-2 py-1 text-xs"
+                    onchange="updateRole(this)">
+              <option value="usuario"   ${u.rol==='usuario'?'selected':''}>usuario</option>
+              <option value="admin"     ${u.rol==='admin'?'selected':''}>admin</option>
+              <option value="superadmin"${u.rol==='superadmin'?'selected':''}>superadmin</option>
+            </select>
+          </td>
+          <td class="py-2 px-4">
+            <button onclick="delUser(${u.id_usuario})"
+                    class="text-red-500 hover:text-red-400">
+              <i data-feather="trash-2" class="w-4 h-4"></i>
+            </button>
+          </td>
+        </tr>`).join('');
+      feather.replace();           // reprocesa iconos dentro de la tabla
+    }
+
+    function updateRole(sel) {
+      fetch('/api/super/users/' + sel.dataset.id + '/role', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token
+        },
+        body: JSON.stringify({ rol: sel.value })
+      }).catch(() => alert('Error al cambiar rol'));
+    }
+
+    function delUser(id) {
+      if (!confirm('¿Eliminar usuario definitivamente?')) return;
+      fetch('/api/super/users/' + id, {
+        method: 'DELETE',
+        headers: { Authorization: 'Bearer ' + token }
+      })
+      .then(() => location.reload())
+      .catch(() => alert('Error al eliminar usuario'));
+    }
+  </script>
+</body>
+</html>

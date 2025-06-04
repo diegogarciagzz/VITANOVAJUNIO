@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recuperar Contraseña</title>
+  <link rel="stylesheet" href="../Estilos/styles.css" />
+</head>
+<body>
+  <div class="centered-page">
+    <div class="card">
+      <h2 class="subtitle">Recuperar Contraseña</h2>
+      <form id="recoverForm">
+        <input type="email" id="email" placeholder="Correo electrónico" class="input" required />
+        <button type="submit" class="btn">Enviar correo de recuperación</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('recoverForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+
+      try {
+        const response = await fetch('http://localhost:3000/api/auth/recover-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+        alert(data.message || data.error);
+      } catch (err) {
+        console.error('Error al enviar correo de recuperación:', err);
+      }
+    });
+  </script>
+</body>
+</html>

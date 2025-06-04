@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mawi – Inicio</title>
+  <link rel="stylesheet" href="Estilos/styles.css" />
+</head>
+<body>
+  <div class="centered-page">
+    <div class="card">
+      <h1 class="title">Mawi</h1>
+      <p class="description">
+        Inicia sesión o crea tu cuenta para empezar a usar Mawi y todas sus funciones.
+      </p>
+
+      <div class="button-group">
+        <a href="login.html"                       class="btn">Iniciar sesión</a>
+        <a href="CrearCuenta/datos-personales.html" class="btn">Crear cuenta</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Lógica de sesión / redirección ─── -->
+  <script>
+    /* 1 · borra restos antiguos guardados en localStorage  */
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('foto_perfil');
+
+    /* 2 · si existe una sesión EN ESTA PESTAÑA → redirige según rol */
+    const sesion = sessionStorage.getItem('user');
+    if (sesion) {
+      const { rol } = JSON.parse(sesion);
+      if      (rol === 'superadmin') location.href = 'dashboard.html'; // panel grande
+      else if (rol === 'admin')      location.href = 'admin.html';     // panel admin
+      else                           location.href = 'dashboard.html'; // usuario normal
+    }
+  </script>
+</body>
+</html>

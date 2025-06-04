@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Mawi – Dashboard</title>
+
+  <!-- Tailwind + Feather -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <style>
+    /* -------- theme puntual -------- */
+    body{background:#353535;color:#fff;font-family:Inter,system-ui,sans-serif}
+    /* oculta texto cuando la barra está colapsada */
+    .collapsed .sidebar-label{opacity:0;pointer-events:none}
+    /* cards centrales */
+    .card{background:#505050;border-radius:1rem;padding:1.5rem;width:260px;
+          display:flex;flex-direction:column;align-items:center;gap:.75rem;
+          text-align:center;box-shadow:0 2px 4px rgba(0,0,0,.25)}
+    .card img{width:80px;height:80px;object-fit:contain}
+    .card h3{font-size:1.25rem;font-weight:700;line-height:1.2}
+    .card p{font-size:.875rem;color:#e0e0e0}
+    /* botón soporte centrado debajo de las cards */
+    .btn-soporte{margin-top:2.5rem;background:#505050;padding:.75rem 2rem;
+                 border-radius:.75rem;display:inline-flex;align-items:center;
+                 gap:.5rem;cursor:pointer;transition:background .2s}
+    .btn-soporte:hover{background:#3d3d3d}
+    .btn-soporte img{width:20px;height:20px;object-fit:contain}
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ▸ NAVBAR ------------------------------------------------------ -->
+  <header class="bg-gray-800 flex items-center justify-between h-14 px-6">
+    <div class="flex items-center gap-2">
+      <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+        <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/>
+        <circle cx="12" cy="12" r="2.5"/>
+      </svg>
+      <span class="font-semibold text-lg">Mawi</span>
+    </div>
+    <div id="profileBtn"
+         class="flex items-center gap-2 cursor-pointer hover:opacity-80">
+      <span id="userName" class="text-sm">Usuario</span>
+      <img id="avatar" src="../assets/avatar-placeholder.png"
+           class="w-8 h-8 rounded-full object-cover border-2 border-gray-700">
+    </div>
+  </header>
+
+  <div class="flex flex-grow overflow-hidden">
+    <!-- ▸ SIDEBAR ---------------------------------------------------- -->
+    <aside id="sidebar"
+           class="bg-gray-900 w-64 flex flex-col transition-all duration-200">
+
+      <!-- Flecha -->
+      <button id="toggleSide"
+              class="self-end mt-3 mr-2 p-1 rounded hover:bg-gray-700">
+        <i data-feather="chevron-left" class="w-4 h-4"></i>
+      </button>
+
+      <nav class="flex flex-col gap-4 mt-6 px-6 text-sm">
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="activity" class="w-4 h-4"></i>
+          <span class="sidebar-label">Asistente Biomo</span>
+        </a>
+
+        <a href="#"
+           class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="file-text" class="w-4 h-4"></i>
+          <span class="sidebar-label">Nuevas Convocatorias</span>
+        </a>
+
+        <a href="#"
+           class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="layers" class="w-4 h-4"></i>
+          <span class="sidebar-label">Explorador Anteproyectos</span>
+        </a>
+
+        <a href="#"
+           class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="message-circle" class="w-4 h-4"></i>
+          <span class="sidebar-label">Chatbot</span>
+        </a>
+      </nav>
+
+      <!-- Botón cerrar sesión -->
+      <button id="logoutBtn"
+              class="flex items-center gap-3 hover:text-red-400 py-2 px-6 mt-4">
+        <i data-feather="log-out" class="w-4 h-4"></i>
+        <span class="sidebar-label">Cerrar sesión</span>
+      </button>
+
+      <!-- Soporte -->
+      <button id="supportBtn"
+              class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500">
+        <i data-feather="phone" class="w-4 h-4 text-green-500"></i>
+        <span class="text-sm sidebar-label">Soporte</span>
+      </button>
+    </aside>
+
+    <!-- ▸ CONTENIDO -------------------------------------------------- -->
+    <main class="flex-1 overflow-y-auto p-8 flex flex-col items-center">
+
+      <div class="flex flex-wrap justify-center gap-10">
+        <!-- Card 1 -->
+        <div class="card">
+          <img src="/FrontEnd\Assets\IconoBiomo2.png" alt="Mi Biomo">
+          <h3>Asistente de<br>Mi Biomo</h3>
+          <p>El asistente te ayudará a conocer todos los datos sobre tu
+             biomonitoreo y a subir datos nuevos.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+          <img src="\FrontEnd\Assets\IconoConvocatorias2.png" alt="Convocatorias">
+          <h3>Asistente de<br>Nuevas Convocatorias</h3>
+          <p>Participa en nuevas convocatorias y registra los datos de tu
+             anteproyecto.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+          <img src="FrontEnd/Assets/IconoAnteproyectos2.png" alt="Anteproyectos">
+          <h3>Asistente<br>Explorador de Anteproyectos</h3>
+          <p>Interactúa con convocatorias abiertas y formula anteproyectos.</p>
+        </div>
+      </div>
+
+      <button class="btn-soporte" id="centerSupport">
+        <img src="FrontEnd\Assets\IconoTelefono2.png" alt="Soporte">
+        Contacta con el soporte
+      </button>
+    </main>
+  </div>
+
+  <!-- ▸ JS ----------------------------------------------------------- -->
+  <script>
+    feather.replace();
+
+    /* 1. Contraer / expandir sidebar */
+    const sidebar   = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggleSide');
+    const arrow     = toggleBtn.querySelector('svg');
+
+    toggleBtn.onclick = ()=>{
+      sidebar.classList.toggle('w-64');
+      sidebar.classList.toggle('w-16');
+      sidebar.classList.toggle('collapsed');
+      arrow.classList.toggle('rotate-180');
+    };
+
+    /* 2. Datos usuario */
+    const u   = JSON.parse(localStorage.getItem('user') || '{}');
+    const ava = localStorage.getItem('foto_perfil');
+    if(u?.nombre) document.getElementById('userName').textContent = u.nombre;
+    if(ava) document.getElementById('avatar').src = ava;
+
+    /* 3. Cerrar sesión */
+    document.getElementById('logoutBtn').onclick = ()=>{
+      sessionStorage.clear();
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      localStorage.removeItem('foto_perfil');
+      location.href = '../index.html';   // ajusta si está en otra ruta
+    };
+
+    /* 4. Soporte (botón lateral y central) */
+    const sendMail = ()=>location.href = 'mailto:soporte@mawi.com';
+    document.getElementById('supportBtn').onclick   = sendMail;
+    document.getElementById('centerSupport').onclick= sendMail;
+
+    /* 5. Perfil */
+    profileBtn.onclick = ()=>location.href = '../Perfil/perfil.html';
+  </script>
+</body>
+</html>
