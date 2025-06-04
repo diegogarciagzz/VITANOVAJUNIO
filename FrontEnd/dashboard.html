@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Mawi – Dashboard</title>
 
   <!-- Tailwind + Feather -->
@@ -10,13 +10,28 @@
   <script src="https://unpkg.com/feather-icons"></script>
 
   <style>
-    /* oculta texto cuando .collapsed está en <aside> */
+    /* -------- theme puntual -------- */
+    body{background:#353535;color:#fff;font-family:Inter,system-ui,sans-serif}
+    /* oculta texto cuando la barra está colapsada */
     .collapsed .sidebar-label{opacity:0;pointer-events:none}
+    /* cards centrales */
+    .card{background:#505050;border-radius:1rem;padding:1.5rem;width:260px;
+          display:flex;flex-direction:column;align-items:center;gap:.75rem;
+          text-align:center;box-shadow:0 2px 4px rgba(0,0,0,.25)}
+    .card img{width:80px;height:80px;object-fit:contain}
+    .card h3{font-size:1.25rem;font-weight:700;line-height:1.2}
+    .card p{font-size:.875rem;color:#e0e0e0}
+    /* botón soporte centrado debajo de las cards */
+    .btn-soporte{margin-top:2.5rem;background:#505050;padding:.75rem 2rem;
+                 border-radius:.75rem;display:inline-flex;align-items:center;
+                 gap:.5rem;cursor:pointer;transition:background .2s}
+    .btn-soporte:hover{background:#3d3d3d}
+    .btn-soporte img{width:20px;height:20px;object-fit:contain}
   </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col">
 
-  <!-- ──────────  NAVBAR  ────────── -->
+  <!-- ▸ NAVBAR ------------------------------------------------------ -->
   <header class="bg-gray-800 flex items-center justify-between h-14 px-6">
     <div class="flex items-center gap-2">
       <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -25,132 +40,138 @@
       </svg>
       <span class="font-semibold text-lg">Mawi</span>
     </div>
-    <div id="profileBtn" class="flex items-center gap-2 cursor-pointer hover:opacity-80">
+    <div id="profileBtn"
+         class="flex items-center gap-2 cursor-pointer hover:opacity-80">
       <span id="userName" class="text-sm">Usuario</span>
       <img id="avatar" src="../assets/avatar-placeholder.png"
-           class="w-8 h-8 rounded-full object-cover border-2 border-gray-700"/>
+           class="w-8 h-8 rounded-full object-cover border-2 border-gray-700">
     </div>
   </header>
 
   <div class="flex flex-grow overflow-hidden">
-    <!-- ──────────  SIDEBAR  ────────── -->
+    <!-- ▸ SIDEBAR ---------------------------------------------------- -->
     <aside id="sidebar"
            class="bg-gray-900 w-64 flex flex-col transition-all duration-200">
-      <!-- botón colapsar -->
+
+      <!-- Flecha -->
       <button id="toggleSide"
               class="self-end mt-3 mr-2 p-1 rounded hover:bg-gray-700">
         <i data-feather="chevron-left" class="w-4 h-4"></i>
       </button>
 
-      <!-- links comunes -->
       <nav class="flex flex-col gap-4 mt-6 px-6 text-sm">
-        <a href="#"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="home" class="w-4 h-4"></i>
-          <span class="sidebar-label">Inicio</span>
-        </a>
-
-        <a href="./Asistentes/Biomo/biomo.html"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="database" class="w-4 h-4"></i>
-          <span class="sidebar-label">Número de Biomos</span>
-        </a>
-
-        <a href="#"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="users" class="w-4 h-4"></i>
-          <span class="sidebar-label">Número de EcoRangers</span>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="activity" class="w-4 h-4"></i>
+          <span class="sidebar-label">Asistente Biomo</span>
         </a>
 
         <a href="#"
            class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="file-text" class="w-4 h-4"></i>
-          <span class="sidebar-label">Número de Anteproyectos</span>
+          <span class="sidebar-label">Nuevas Convocatorias</span>
         </a>
 
         <a href="#"
            class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="link" class="w-4 h-4"></i>
-          <span class="sidebar-label">Conexión SFDC</span>
+          <i data-feather="layers" class="w-4 h-4"></i>
+          <span class="sidebar-label">Explorador Anteproyectos</span>
         </a>
 
         <a href="#"
            class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="bar-chart-2" class="w-4 h-4"></i>
-          <span class="sidebar-label">Informes, Métricas</span>
+          <i data-feather="message-circle" class="w-4 h-4"></i>
+          <span class="sidebar-label">Chatbot</span>
         </a>
-
-        <a href="#"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="user-plus" class="w-4 h-4"></i>
-          <span class="sidebar-label">Crear EcoRanger</span>
-        </a>
-
-        <a href="#"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="search" class="w-4 h-4"></i>
-          <span class="sidebar-label">View de EcoRanger</span>
-        </a>
-
-        <!-- ── links exclusivos super-admin ── -->
-        <div id="superLinks" class="flex flex-col gap-4"></div>
       </nav>
 
-      <!-- soporte -->
+      <!-- Botón cerrar sesión -->
+      <button id="logoutBtn"
+              class="flex items-center gap-3 hover:text-red-400 py-2 px-6 mt-4">
+        <i data-feather="log-out" class="w-4 h-4"></i>
+        <span class="sidebar-label">Cerrar sesión</span>
+      </button>
+
+      <!-- Soporte -->
       <button id="supportBtn"
               class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500">
         <i data-feather="phone" class="w-4 h-4 text-green-500"></i>
-        <span class="text-sm sidebar-label">Contacta con el soporte</span>
+        <span class="text-sm sidebar-label">Soporte</span>
       </button>
     </aside>
 
-    <!-- ──────────  CONTENIDO  ────────── -->
-    <main class="flex-1 overflow-y-auto p-6">
-      <h1 class="text-2xl font-semibold">Dashboard</h1>
-      <p class="text-gray-300 mt-4">Contenido del super-admin…</p>
+    <!-- ▸ CONTENIDO -------------------------------------------------- -->
+    <main class="flex-1 overflow-y-auto p-8 flex flex-col items-center">
+
+      <div class="flex flex-wrap justify-center gap-10">
+        <!-- Card 1 -->
+        <div class="card">
+          <img src="/FrontEnd\Assets\IconoBiomo2.png" alt="Mi Biomo">
+          <h3>Asistente de<br>Mi Biomo</h3>
+          <p>El asistente te ayudará a conocer todos los datos sobre tu
+             biomonitoreo y a subir datos nuevos.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+          <img src="\FrontEnd\Assets\IconoConvocatorias2.png" alt="Convocatorias">
+          <h3>Asistente de<br>Nuevas Convocatorias</h3>
+          <p>Participa en nuevas convocatorias y registra los datos de tu
+             anteproyecto.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+          <img src="FrontEnd/Assets/IconoAnteproyectos2.png" alt="Anteproyectos">
+          <h3>Asistente<br>Explorador de Anteproyectos</h3>
+          <p>Interactúa con convocatorias abiertas y formula anteproyectos.</p>
+        </div>
+      </div>
+
+      <button class="btn-soporte" id="centerSupport">
+        <img src="FrontEnd\Assets\IconoTelefono2.png" alt="Soporte">
+        Contacta con el soporte
+      </button>
     </main>
   </div>
 
+  <!-- ▸ JS ----------------------------------------------------------- -->
   <script>
     feather.replace();
 
-    /* colapsar/expandir */
-    const sidebar = document.getElementById('sidebar');
-    const toggle  = document.getElementById('toggleSide');
-    toggle.addEventListener('click', () => {
+    /* 1. Contraer / expandir sidebar */
+    const sidebar   = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggleSide');
+    const arrow     = toggleBtn.querySelector('svg');
+
+    toggleBtn.onclick = ()=>{
       sidebar.classList.toggle('w-64');
-      sidebar.classList.toggle('w-16');        // Tailwind: 4 rem
-      sidebar.classList.toggle('collapsed');   // oculta texto
-      toggle.querySelector('svg').classList.toggle('rotate-180');
-    });
+      sidebar.classList.toggle('w-16');
+      sidebar.classList.toggle('collapsed');
+      arrow.classList.toggle('rotate-180');
+    };
 
-    /* datos usuario */
-    const user   = JSON.parse(localStorage.getItem('user') || '{}');
-    const avatar = localStorage.getItem('foto_perfil');
-    if(user?.nombre) document.getElementById('userName').textContent = user.nombre;
-    if(avatar)       document.getElementById('avatar').src = avatar;
+    /* 2. Datos usuario */
+    const u   = JSON.parse(localStorage.getItem('user') || '{}');
+    const ava = localStorage.getItem('foto_perfil');
+    if(u?.nombre) document.getElementById('userName').textContent = u.nombre;
+    if(ava) document.getElementById('avatar').src = ava;
 
-    /* links extra para superadmin */
-    if(user?.rol === 'superadmin'){
-      document.getElementById('superLinks').innerHTML = `
-        <a href="Views/super/users.html"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="shield" class="w-4 h-4"></i>
-          <span class="sidebar-label">Gestión de Usuarios</span>
-        </a>
-        <a href="Views/super/pending.html"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="clock" class="w-4 h-4"></i>
-          <span class="sidebar-label">Solicitudes Pendientes</span>
-        </a>`;
-      feather.replace(); /* iconos nuevos */
-    }
+    /* 3. Cerrar sesión */
+    document.getElementById('logoutBtn').onclick = ()=>{
+      sessionStorage.clear();
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      localStorage.removeItem('foto_perfil');
+      location.href = '../index.html';   // ajusta si está en otra ruta
+    };
 
-    /* perfil + soporte */
-    document.getElementById('profileBtn')
-            .addEventListener('click', ()=>location.href='../Perfil/perfil.html');
-    document.getElementById('supportBtn')
-            .addEventListener('click', ()=>location.href='mailto:soporte@mawi.com');
+    /* 4. Soporte (botón lateral y central) */
+    const sendMail = ()=>location.href = 'mailto:soporte@mawi.com';
+    document.getElementById('supportBtn').onclick   = sendMail;
+    document.getElementById('centerSupport').onclick= sendMail;
+
+    /* 5. Perfil */
+    profileBtn.onclick = ()=>location.href = '../Perfil/perfil.html';
   </script>
 </body>
 </html>

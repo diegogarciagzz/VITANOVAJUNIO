@@ -96,6 +96,13 @@
         </a>
       </nav>
 
+             <!-- botón cerrar sesión -->
+        <button id="logoutBtn"
+        class="flex items-center gap-3 hover:text-red-400 py-2 mt-4">
+        <i data-feather="log-out" class="w-4 h-4"></i>
+         <span class="sidebar-label">Cerrar sesión</span>
+         </button>
+
       <!-- soporte -->
       <button id="supportBtn"
               class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500">
@@ -128,6 +135,16 @@
     const av = localStorage.getItem('foto_perfil');
     if(av) document.getElementById('avatar').src = av;
 
+
+/* cerrar sesión */
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  sessionStorage.clear();                 // borra sesión actual
+  /* borra restos de la sesión antigua en localStorage */
+  localStorage.removeItem('user');
+  localStorage.removeItem('token');
+  localStorage.removeItem('foto_perfil'); // si lo usas
+  location.href = 'index.html';           // vuelve al landing
+});
     /* perfil/soporte */
     profileBtn.onclick = ()=>location.href='../Perfil/perfil.html';
     supportBtn.onclick = ()=>location.href='mailto:soporte@mawi.com';
