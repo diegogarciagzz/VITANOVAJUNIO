@@ -1,42 +1,34 @@
-// Backend/controllers/authController.js (columna "contrasena" sin eñe)
-import { db } from '../db.js';
-import bcrypt from 'bcryptjs';
-import jwt    from 'jsonwebtoken';
-import crypto from 'crypto';
-import nodemailer from 'nodemailer';
+// Backend/controllers/authController.js  (columna 'contrasena' sin eñe)
+import { db }       from '../db.js';
+import bcrypt       from 'bcryptjs';
+import jwt          from 'jsonwebtoken';
+import crypto       from 'crypto';
+import nodemailer   from 'nodemailer';
 
 /* ---------- Config de correo ---------- */
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
+  auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
 });
-/* ================== REGISTRO ================== */
+
+/* ================ REGISTRO ================ */
 export const register = async (req, res) => {
   const { nombre, apellidos, email, password } = req.body;
-  if (!password)
-    return res.status(400).json({ error: 'La contraseña es obligatoria' });
+  if (!password) return res.status(400).json({ error: 'La contraseña es obligatoria' });
 
   try {
-    // ¿Correo ya existe?
     const [dup] = await db.execute('SELECT 1 FROM usuarios WHERE email = ?', [email]);
-    if (dup.length)
-      return res.status(400).json({ error: 'Correo ya registrado' });
+    if (dup.length) return res.status(400).json({ error: 'Correo ya registrado' });
 
-    // Hash y alta
     const hashed = await bcrypt.hash(password, 10);
     const [result] = await db.execute(
       `INSERT INTO usuarios (nombre, apellidos, email, contrasena, aprobado, rol)
        VALUES (?, ?, ?, ?, 0, 'usuario')`,
       [nombre, apellidos, email, hashed]
     );
-    const insertId = result.insertId;
 
-    /* === NUEVO: genera y devuelve el token === */
     const token = jwt.sign(
-      { id_usuario: insertId, rol: 'usuario' },
+      { id_usuario: result.insertId, rol: 'usuario' },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -45,7 +37,7 @@ export const register = async (req, res) => {
       message: 'Cuenta creada. Pendiente de aprobación.',
       token,
       user: {
-        id_usuario: insertId,
+        id_usuario: result.insertId,
         nombre,
         apellidos,
         rol: 'usuario'
@@ -57,10 +49,11 @@ export const register = async (req, res) => {
   }
 };
 
-/* ================== LOGIN ================== */
+/* ================ LOGIN ================ */
 export const login = async (req, res) => {
   const { email, password } = req.body;
   if (!password) return res.status(400).json({ error: 'La contraseña es obligatoria' });
+
   try {
     const [rows] = await db.execute('SELECT * FROM usuarios WHERE email = ?', [email]);
     const user = rows[0];
@@ -76,9 +69,10 @@ export const login = async (req, res) => {
       { expiresIn: '7d' }
     );
 
-    let redirect = 'dashboard.html';
+    /* ---------- redirección ---------- */
+    let redirect = 'dashboard.html';          // default para usuario
     if (user.rol === 'admin')      redirect = 'admin.html';
-    if (user.rol === 'superadmin') redirect = 'super-admin.html';
+    if (user.rol === 'superadmin') redirect = 'super-Admin.html'; // ← cambio clave
 
     res.json({
       message: 'Inicio de sesión exitoso',
@@ -97,7 +91,7 @@ export const login = async (req, res) => {
   }
 };
 
-/* ================== RECUPERAR PASSWORD ================== */
+/* ================ RECUPERAR PASSWORD ================ */
 export const recoverPassword = async (req, res) => {
   const { email } = req.body;
   try {
@@ -114,20 +108,23 @@ export const recoverPassword = async (req, res) => {
       from   : `Soporte Vitanova <${process.env.EMAIL_USER}>`,
       to     : email,
       subject: 'Recuperación de contraseña - Vitanova',
-      html   : `<h2>Recuperación de contraseña</h2><p>Haz clic en el enlace para cambiar tu contraseña:</p><a href="${link}">Cambiar Contraseña</a>`
+      html   : `<h2>Recuperación de contraseña</h2>
+                <p>Haz clic en el enlace para cambiar tu contraseña:</p>
+                <a href="${link}">Cambiar Contraseña</a>`
     });
 
     res.json({ message: 'Correo de recuperación enviado correctamente' });
   } catch (err) {
-    console.error('Error al enviar correo de recuperación:', err);
+    console.error('Error al enviar correo de recuperación:', err.sqlMessage || err);
     res.status(500).json({ error: 'Error al enviar correo de recuperación' });
   }
 };
 
-/* ================== CAMBIAR PASSWORD ================== */
+/* ================ CAMBIAR PASSWORD ================ */
 export const changePassword = async (req, res) => {
   const { token, nuevaContraseña } = req.body;
   if (!nuevaContraseña) return res.status(400).json({ error: 'La nueva contraseña es obligatoria' });
+
   try {
     const [rows] = await db.execute('SELECT * FROM usuarios WHERE token_recuperacion = ?', [token]);
     const user = rows[0];

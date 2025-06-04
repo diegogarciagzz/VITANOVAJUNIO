@@ -11,6 +11,8 @@ import faunaRoutes  from './routes/fauna.js';
 import authRoutes   from './routes/auth.js';
 import adminRoutes  from './routes/admin.js';
 import usersRoutes  from './routes/users.js';
+import superRoutes from './routes/superAdmin.js';
+import biomosRoutes from './routes/biomos.js';
 
 dotenv.config();
 const app  = express();
@@ -34,6 +36,9 @@ app.use('/api/auth',  authRoutes);
 app.use('/api/fauna', faunaRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/biomos', biomosRoutes);
+app.use('/api/super', superRoutes);
+
 
 /* Páginas de recuperar contraseña */
 app.get('/recuperarContraseña/cambiar-contraseña.html', (_, res) =>

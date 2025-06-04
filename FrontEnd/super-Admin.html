@@ -3,20 +3,19 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Mawi – Dashboard</title>
+  <title>Mawi – Super-Admin</title>
 
   <!-- Tailwind + Feather -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
 
   <style>
-    /* oculta texto cuando .collapsed está en <aside> */
     .collapsed .sidebar-label{opacity:0;pointer-events:none}
   </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col">
 
-  <!-- ──────────  NAVBAR  ────────── -->
+  <!-- NAVBAR -->
   <header class="bg-gray-800 flex items-center justify-between h-14 px-6">
     <div class="flex items-center gap-2">
       <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -33,67 +32,68 @@
   </header>
 
   <div class="flex flex-grow overflow-hidden">
-    <!-- ──────────  SIDEBAR  ────────── -->
+    <!-- SIDEBAR -->
     <aside id="sidebar"
            class="bg-gray-900 w-64 flex flex-col transition-all duration-200">
-      <!-- botón colapsar -->
       <button id="toggleSide"
               class="self-end mt-3 mr-2 p-1 rounded hover:bg-gray-700">
         <i data-feather="chevron-left" class="w-4 h-4"></i>
       </button>
 
-      <!-- links comunes -->
+      <!-- menú -->
       <nav class="flex flex-col gap-4 mt-6 px-6 text-sm">
         <a href="#"
            class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="home" class="w-4 h-4"></i>
           <span class="sidebar-label">Inicio</span>
         </a>
-
         <a href="./Asistentes/Biomo/biomo.html"
            class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="database" class="w-4 h-4"></i>
           <span class="sidebar-label">Número de Biomos</span>
         </a>
-
         <a href="#"
            class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="users" class="w-4 h-4"></i>
           <span class="sidebar-label">Número de EcoRangers</span>
         </a>
-
         <a href="#"
            class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="file-text" class="w-4 h-4"></i>
           <span class="sidebar-label">Número de Anteproyectos</span>
         </a>
-
         <a href="#"
            class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="link" class="w-4 h-4"></i>
           <span class="sidebar-label">Conexión SFDC</span>
         </a>
-
         <a href="#"
            class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="bar-chart-2" class="w-4 h-4"></i>
           <span class="sidebar-label">Informes, Métricas</span>
         </a>
-
         <a href="#"
            class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="user-plus" class="w-4 h-4"></i>
           <span class="sidebar-label">Crear EcoRanger</span>
         </a>
-
         <a href="#"
            class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="search" class="w-4 h-4"></i>
           <span class="sidebar-label">View de EcoRanger</span>
         </a>
 
-        <!-- ── links exclusivos super-admin ── -->
-        <div id="superLinks" class="flex flex-col gap-4"></div>
+        <!-- enlaces superadmin -->
+        <a href="Views/super/users.html"
+           class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="shield" class="w-4 h-4"></i>
+          <span class="sidebar-label">Gestión de Usuarios</span>
+        </a>
+        <a href="Views/super/pending.html"
+           class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="clock" class="w-4 h-4"></i>
+          <span class="sidebar-label">Solicitudes Pendientes</span>
+        </a>
       </nav>
 
       <!-- soporte -->
@@ -104,9 +104,9 @@
       </button>
     </aside>
 
-    <!-- ──────────  CONTENIDO  ────────── -->
+    <!-- CONTENIDO -->
     <main class="flex-1 overflow-y-auto p-6">
-      <h1 class="text-2xl font-semibold">Dashboard</h1>
+      <h1 class="text-2xl font-semibold">Dashboard Super-Admin</h1>
       <p class="text-gray-300 mt-4">Contenido del super-admin…</p>
     </main>
   </div>
@@ -114,43 +114,23 @@
   <script>
     feather.replace();
 
-    /* colapsar/expandir */
-    const sidebar = document.getElementById('sidebar');
-    const toggle  = document.getElementById('toggleSide');
-    toggle.addEventListener('click', () => {
-      sidebar.classList.toggle('w-64');
-      sidebar.classList.toggle('w-16');        // Tailwind: 4 rem
-      sidebar.classList.toggle('collapsed');   // oculta texto
-      toggle.querySelector('svg').classList.toggle('rotate-180');
-    });
+    /* colapsar */
+    const sb = document.getElementById('sidebar');
+    document.getElementById('toggleSide').onclick = () =>{
+      sb.classList.toggle('w-64'); sb.classList.toggle('w-16');
+      sb.classList.toggle('collapsed');
+      this.querySelector?.('svg')?.classList.toggle('rotate-180');
+    };
 
     /* datos usuario */
-    const user   = JSON.parse(localStorage.getItem('user') || '{}');
-    const avatar = localStorage.getItem('foto_perfil');
+    const user = JSON.parse(localStorage.getItem('user')||'{}');
     if(user?.nombre) document.getElementById('userName').textContent = user.nombre;
-    if(avatar)       document.getElementById('avatar').src = avatar;
+    const av = localStorage.getItem('foto_perfil');
+    if(av) document.getElementById('avatar').src = av;
 
-    /* links extra para superadmin */
-    if(user?.rol === 'superadmin'){
-      document.getElementById('superLinks').innerHTML = `
-        <a href="Views/super/users.html"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="shield" class="w-4 h-4"></i>
-          <span class="sidebar-label">Gestión de Usuarios</span>
-        </a>
-        <a href="Views/super/pending.html"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="clock" class="w-4 h-4"></i>
-          <span class="sidebar-label">Solicitudes Pendientes</span>
-        </a>`;
-      feather.replace(); /* iconos nuevos */
-    }
-
-    /* perfil + soporte */
-    document.getElementById('profileBtn')
-            .addEventListener('click', ()=>location.href='../Perfil/perfil.html');
-    document.getElementById('supportBtn')
-            .addEventListener('click', ()=>location.href='mailto:soporte@mawi.com');
+    /* perfil/soporte */
+    profileBtn.onclick = ()=>location.href='../Perfil/perfil.html';
+    supportBtn.onclick = ()=>location.href='mailto:soporte@mawi.com';
   </script>
 </body>
 </html>
