@@ -192,3 +192,21 @@ body {
   color: #CCCCCC;
   font-size: 10px;
 }
+
+.overlay {
+  position: fixed;
+  bottom: -100%;
+  left: 0;
+  right: 0;
+  background-color: #202020;
+  border-radius: 20px 20px 0 0;
+  padding: 24px;
+  color: white;
+  transition: bottom 0.4s ease;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+.overlay.visible {
+  bottom: 0;
+}
