@@ -3,48 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sube tu imagen de perfil</title>
-  <link rel="stylesheet" href="../Estilos/upload-styles.css" />
+  <title>Mawi - Imagen de perfil</title>
+  <link rel="stylesheet" href="/FrontEnd/Estilos/general-inicio.css" />
 </head>
-<body>
-  <div class="centered-page">
-    <div class="card">
-      <h2 class="subtitle">Sube tu imagen de perfil</h2>
-      <p>Arrastra y suelta o selecciona un archivo</p>
+<body class="recuperar">
+  <div class="card-container">
+    <h2 class="tittle">Sube tu imagen de perfil</h2>
+    <p class="subtitle">Arrastra y suelta o selecciona un archivo</p>
 
-      <!-- Zona de arrastre -->
-      <div id="dropZone" class="upload-container">
-        <input type="file" id="fileInput" class="file-input" accept="image/*" />
-        <label for="fileInput" class="file-label">Elegir archivo</label>
-      </div>
-
-      <p id="fileName" class="file-name">No se eligió ningún archivo</p>
-
-      <button id="uploadButton" class="btn">Siguiente</button>
+    <div id="dropZone" class="upload-container">
+      <input type="file" id="fileInput" class="file-input" accept="image/*" />
+      <label for="fileInput" class="btn-green">Elegir archivo</label>
     </div>
+
+    <p id="fileName" class="file-name">No se eligió ningún archivo</p>
+
+    <button class="btn-green" id="uploadButton">Siguiente</button>
+
+    <p class="support-link"><a href="#">¿Necesitas ayuda? Contacta con nosotros</a></p>
   </div>
 
   <script>
-    const fileInput     = document.getElementById('fileInput');
-    const fileNameEl    = document.getElementById('fileName');
-    const uploadButton  = document.getElementById('uploadButton');
-    const dropZone      = document.getElementById('dropZone');
-    const token         = localStorage.getItem('token');
+    const fileInput    = document.getElementById('fileInput');
+    const fileNameEl   = document.getElementById('fileName');
+    const uploadButton = document.getElementById('uploadButton');
+    const dropZone     = document.getElementById('dropZone');
+    const token        = localStorage.getItem('token');
 
-    /* ===== preview del nombre ===== */
     fileInput.addEventListener('change', () => {
       const file = fileInput.files[0];
       fileNameEl.textContent = file ? file.name : 'No se eligió ningún archivo';
     });
 
-    /* ===== arrastrar y soltar ===== */
-    ;['dragenter', 'dragover'].forEach(evt =>
+    ['dragenter', 'dragover'].forEach(evt =>
       dropZone.addEventListener(evt, e => {
         e.preventDefault();
         dropZone.classList.add('highlight');
       })
     );
-    ;['dragleave', 'drop'].forEach(evt =>
+    ['dragleave', 'drop'].forEach(evt =>
       dropZone.addEventListener(evt, e => {
         e.preventDefault();
         dropZone.classList.remove('highlight');
@@ -53,12 +50,11 @@
     dropZone.addEventListener('drop', e => {
       const files = e.dataTransfer.files;
       if (files.length) {
-        fileInput.files = files;      // Asigna al input para usar FormData
+        fileInput.files = files;
         fileNameEl.textContent = files[0].name;
       }
     });
 
-    /* ===== subir y continuar ===== */
     uploadButton.addEventListener('click', async () => {
       if (!fileInput.files[0]) {
         return alert('Por favor, selecciona una imagen primero.');
@@ -80,7 +76,7 @@
         if (!res.ok) return alert(data.error);
 
         localStorage.setItem('foto_perfil', data.foto_perfil);
-        window.location.href = './datos-ubicacion.html';
+        window.location.href = 'datos-ubicacion.html';
       } catch (err) {
         console.error(err);
         alert('Error al subir la imagen');

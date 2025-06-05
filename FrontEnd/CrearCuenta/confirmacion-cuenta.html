@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cuenta creada</title>
-  <link rel="stylesheet" href="../Estilos/styles.css" />
+  <title>Mawi - Confirmación de cuenta</title>
+  <link rel="stylesheet" href="/FrontEnd/Estilos/general-inicio.css" />
 </head>
-<body>
-  <div class="centered-page">
-    <div class="card message-card">
-      <p class="message-text">¡Tu cuenta ha sido creada exitosamente!</p>
-      <button type="button" class="btn" onclick="window.location.href='../login.html'">Iniciar sesión</button>
-    </div>
+<body class="recuperar">
+  <div class="card-container"> 
+    <h2 class="tittle">¡Tu cuenta ha sido creada exitosamente!</h2>
+    <p class="subtitle">Ya puedes comenzar a utilizar Mawi y explorar todas sus funciones</p>
+
+    <button type="button" class="btn-green" id="btnComenzar">Comenzar</button>
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById("btnComenzar").addEventListener("click", function () {
+      window.location.href = "/FrontEnd/login.html";
     });
   </script>
 </body>

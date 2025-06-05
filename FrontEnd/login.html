@@ -4,55 +4,58 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mawi - Iniciar sesión</title>
-  <link rel="stylesheet" href="Estilos/styles.css" />
+  <link rel="stylesheet" href="../FrontEnd/Estilos/general-inicio.css" />
 </head>
 <body>
-  <div class="centered-page">
-    <div class="card">
-      <h2 class="subtitle">Iniciar sesión</h2>
-      <a href="CrearCuenta/datos-personales.html" class="small-link">¿Crear cuenta?</a>
+  <div class="card-container">
+    <h2 class="title">Iniciar sesión</h2>
+    <p class="subtitle">
+      <a href="CrearCuenta/datos-personales.html" style="color: #88cd84; text-decoration: none;">
+        ¿No tienes cuenta? Crea una nueva
+      </a>
+    </p>
 
-      <form class="form" id="loginForm">
-        <label for="email" class="label">Correo electrónico</label>
-        <input type="email" id="email" placeholder="Escribe tu correo" class="input" required />
+    <form class="login-form" id="loginForm">
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" placeholder="Escribe..." required />
 
-        <label for="password" class="label">Contraseña</label>
-        <input type="password" id="password" placeholder="Escribe tu contraseña" class="input" required />
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" placeholder="Escribe..." required />
 
-        <a href="recuperarContraseña/recuperar.html" class="forgot-link">¿Has olvidado tu contraseña?</a>
+      <a href="recuperarContraseña/recuperar.html" class="forgot-password">¿Has olvidado tu contraseña?</a>
 
-        <button type="submit" class="btn">Iniciar sesión</button>
-      </form>
-    </div>
+      <button type="submit" class="btn-green">Iniciar sesión</button>
+    </form>
+
+    <p class="support-link">
+      <a href="/Usuario/Soporte/soporte.html" style="color: #f0f0f0;">¿Necesitas ayuda? Contacta con nosotros</a>
+    </p>
   </div>
 
   <script>
-document.getElementById('loginForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const email    = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
 
-  try {
-    const res = await fetch('http://localhost:3000/api/auth/login', {
-      method : 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body   : JSON.stringify({ email, password })   //  💡  password, no "contraseña"
+      try {
+        const res = await fetch('http://localhost:3000/api/auth/login', {
+          method : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body   : JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+        if (!res.ok) return alert(data.error);
+
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('token', data.token);
+        window.location.href = data.redirect;
+      } catch (err) {
+        console.error(err);
+        alert('Error al conectar con el servidor');
+      }
     });
-
-    const data = await res.json();
-    if (!res.ok) return alert(data.error);
-
-    /* guarda usuario + token */
-    localStorage.setItem('user', JSON.stringify(data.user));
-    localStorage.setItem('token', data.token);
-
-    /* redirige */
-    window.location.href = data.redirect;
-  } catch (err) {
-    console.error(err);
-    alert('Error al conectar con el servidor');
-  }
-});
   </script>
 </body>
 </html>
