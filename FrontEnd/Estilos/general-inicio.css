@@ -14,27 +14,26 @@ body {
 
 .card-container {
     background-color: #505050;
-    padding: 25px 24px;
-    width: 320px;
+    padding: 20px 20px;
+    width: 380px;
     text-align: center;
     border-radius: 16px;
 }
 
-.tittle {
-    font-size: 18px;
-    margin-top: 0;
-    margin-bottom: 16px;
+.title {
+    font-size: 24px;
+    margin-top: 22px;
+    margin-bottom: 22px;
 }
 
 .register-link {
-    font-size: 13px;
-    color: #F0F0F0;
-    margin-top: -12px;
+    font-size: 13.5px;
+    margin-top: -15px;
 }
 
 .register-link a {
     text-decoration: none;
-    color: #F0F0F0;
+    color: #88cd84;
 }
 
 .login-form {
@@ -58,7 +57,7 @@ body {
     border-radius: 10px;
     background-color: #656565;
     color: white;
-    font-size: 10px;
+    font-size: 11px;
 }
 
 .login-form input::placeholder {
@@ -66,7 +65,7 @@ body {
 }
 
 .forgot-password {
-    font-size: 9px;
+    font-size: 10px;
     color: #88CD84;
     text-decoration: underline;
     text-align: left;
@@ -79,12 +78,12 @@ body {
     margin: 0 auto;
     background-color: #22782C;
     color: #F0F0F0;
-    padding: 14px;
-    width: 50%;
+    padding: 12px;
+    width: 40%;
     text-align: center;
     border: none;
     border-radius: 12px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -107,7 +106,7 @@ body {
 /* Recuperar */
 
 .recuperar .tittle {
-    font-size: 20px;
+    font-size: 22px;
     margin-top: 22px;
     margin-bottom: 22px;
 }
@@ -137,9 +136,14 @@ body {
 
 .subtitle {
     font-size: 12px;
-    margin-top: -12px;
+    margin-top: -15px;
     margin-bottom: 15px;
     color: #CCCCCC;
+}
+
+.recuperar .subtitle {
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 /* Imagen de perfil – carga de archivos */
