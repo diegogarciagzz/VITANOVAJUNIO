@@ -33,7 +33,7 @@
     if (sesion) {
       const { rol } = JSON.parse(sesion);
       if      (rol === 'superadmin') location.href = 'dashboard.html'; // panel grande
-      else if (rol === 'admin')      location.href = 'admin.html';     // panel admin
+      else if (rol === 'admin')      location.href = 'dashboard.html';     // panel admin
       else                           location.href = 'dashboard.html'; // usuario normal
     }
   </script>

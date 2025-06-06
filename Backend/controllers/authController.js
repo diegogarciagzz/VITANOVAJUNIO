@@ -53,7 +53,6 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   const { email, password } = req.body;
   if (!password) return res.status(400).json({ error: 'La contraseña es obligatoria' });
-
   try {
     const [rows] = await db.execute('SELECT * FROM usuarios WHERE email = ?', [email]);
     const user = rows[0];
@@ -63,26 +62,32 @@ export const login = async (req, res) => {
     const ok = await bcrypt.compare(password, user.contrasena);
     if (!ok) return res.status(401).json({ error: 'Contraseña incorrecta' });
 
+    // Aquí generas el token
     const token = jwt.sign(
       { id_usuario: user.id_usuario, rol: user.rol },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
 
-    /* ---------- redirección ---------- */
-    let redirect = 'dashboard.html';          // default para usuario
+    // Decides la ruta a la que rediriges según rol
+    let redirect = 'dashboard.html';
     if (user.rol === 'admin')      redirect = 'admin.html';
-    if (user.rol === 'superadmin') redirect = 'super-Admin.html'; // ← cambio clave
+    if (user.rol === 'superadmin') redirect = 'super-admin.html';
+
+    // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+    // MODIFICACIÓN: Incluimos `foto_perfil` en la respuesta al cliente
+    // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
     res.json({
       message: 'Inicio de sesión exitoso',
       redirect,
       token,
       user: {
-        id_usuario: user.id_usuario,
-        nombre    : user.nombre,
-        apellidos : user.apellidos,
-        rol       : user.rol
+        id_usuario    : user.id_usuario,
+        nombre        : user.nombre,
+        apellidos     : user.apellidos,
+        rol           : user.rol,
+        foto_perfil   : user.foto_perfil  // <---- Aquí agregamos la ruta tal cual está en la BD
       }
     });
   } catch (err) {

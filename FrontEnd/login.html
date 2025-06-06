@@ -46,6 +46,14 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     localStorage.setItem('user', JSON.stringify(data.user));
     localStorage.setItem('token', data.token);
 
+     // ––––––––– GUARDO foto_perfil EN localStorage –––––––––
+      if (data.user.foto_perfil) {
+        localStorage.setItem('foto_perfil', data.user.foto_perfil);
+      } else {
+        // Si no tiene foto en BD, se puede dejar vacío o placeholder
+        localStorage.removeItem('foto_perfil');
+      }
+
     /* redirige */
     window.location.href = data.redirect;
   } catch (err) {

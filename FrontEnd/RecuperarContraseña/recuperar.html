@@ -4,37 +4,71 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Recuperar Contraseña</title>
+
+  <!--  tu hoja global  -->
   <link rel="stylesheet" href="../Estilos/styles.css" />
+
+  <!--  retoques locales mínimos  -->
+  <style>
+    .card{max-width:380px;padding:2.5rem 2rem}
+    .card input{
+      width:100%;max-width:320px;margin:1rem 0;padding:.65rem 1rem;
+      border-radius:8px;border:1px solid #ccc;font-size:14px;
+    }
+    .info-msg{
+      font-size:.85rem;color:#d4d4d4;margin-top:1rem;text-align:center;
+    }
+  </style>
 </head>
 <body>
   <div class="centered-page">
     <div class="card">
-      <h2 class="subtitle">Recuperar Contraseña</h2>
-      <form id="recoverForm">
-        <input type="email" id="email" placeholder="Correo electrónico" required />
-        <button type="submit" class="btn">Enviar correo de recuperación</button>
+      <h2 class="subtitle">Recuperar contraseña</h2>
+
+      <form id="recoverForm" autocomplete="off">
+        <input type="email" id="email"
+               placeholder="Correo electrónico" required />
+
+        <button type="submit" class="btn w-full">
+          Enviar enlace de recuperación
+        </button>
+
+        <!-- mensaje que aparece después del submit -->
+        <p id="info" class="info-msg" style="display:none">
+          Si existe una cuenta asociada, recibirás un correo con instrucciones.
+        </p>
       </form>
     </div>
   </div>
 
   <script>
-    document.getElementById('recoverForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('email').value;
+  const form = document.getElementById('recoverForm');
+  const info = document.getElementById('info');
 
-      try {
-        const response = await fetch('http://localhost:3000/api/auth/recover-password', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email })
-        });
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = form.email.value.trim();
 
-        const data = await response.json();
-        alert(data.message || data.error);
-      } catch (err) {
-        console.error('Error al enviar correo de recuperación:', err);
-      }
-    });
+    try {
+      const res  = await fetch('/api/auth/recover-password', {
+        method : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body   : JSON.stringify({ email })
+      });
+      const data = await res.json();
+
+      /* muestra mensaje genérico (evita filtrar usuarios existentes) */
+      info.style.display = 'block';
+      /* opcional: reset form */
+      form.reset();
+
+      /* también puedes enseñar error específico si quieres */
+      if (!res.ok) alert(data.error || 'Error inesperado');
+    } catch (err) {
+      console.error(err);
+      alert('No se pudo conectar con el servidor');
+    }
+  });
   </script>
 </body>
 </html>
