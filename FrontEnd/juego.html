@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>VITA NOVA - Juego</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+      padding: 20px;
+    }
+    #unityContainer {
+      width: 960px;
+      height: 600px;
+      margin: 20px auto;
+      border: 2px solid #ccc;
+      display: none;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>¡Bienvenido al videojuego de VITA NOVA!</h2>
+
+  <div id="idInputSection">
+    <p>Ingresa tu ID de registro para comenzar:</p>
+    <input type="text" id="registroId" placeholder="ID de Registro">
+    <button onclick="iniciarJuego()">Jugar</button>
+  </div>
+
+  <div id="unityContainer"></div>
+
+  <script>
+    function iniciarJuego() {
+      const id = document.getElementById("registroId").value.trim();
+      if (!id) {
+        alert("Por favor, introduce un ID válido.");
+        return;
+      }
+
+      // Guardar el ID para otros usos si es necesario
+      localStorage.setItem("registroId", id);
+
+      // Ocultar entrada y mostrar contenedor del juego
+      document.getElementById("idInputSection").style.display = "none";
+      document.getElementById("unityContainer").style.display = "block";
+
+      // Cargar el juego Unity (asumiendo que está en FrontEnd/UnityGame/index.html)
+      const iframe = document.createElement("iframe");
+      iframe.src = "UnityGame/index.html"; 
+      iframe.width = "960";
+      iframe.height = "600";
+      iframe.style.border = "none";
+
+      document.getElementById("unityContainer").appendChild(iframe);
+    }
+
+    // Si ya había un ID guardado, precargar
+    window.onload = () => {
+      const savedId = localStorage.getItem("registroId");
+      if (savedId) {
+        document.getElementById("registroId").value = savedId;
+      }
+    };
+  </script>
+
+</body>
+</html>
