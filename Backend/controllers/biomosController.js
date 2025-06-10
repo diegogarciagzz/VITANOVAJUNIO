@@ -1,4 +1,4 @@
-import { db } from '../db.js';
+import db from '../db.js'; // ✅ importación por defecto
 
 /* GET /api/biomos → lista */
 export const listBiomos = async (_, res) => {

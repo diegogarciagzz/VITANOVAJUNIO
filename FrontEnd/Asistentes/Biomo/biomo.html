@@ -1,56 +1,170 @@
+<!-- Ubicación: /FrontEnd/Asistentes/Biomo/biomo.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Número de Biomos</title>
+  <title>Mawi – Mis Reportes</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    body {
+      background: #353535;
+      color: #fff;
+      font-family: Inter, system-ui, sans-serif;
+    }
+    .sidebar-label { transition: opacity 0.2s; }
+    .card {
+      background: #505050;
+      border-radius: 1rem;
+      padding: 1rem;
+      width: 280px;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    .card:hover { background: #585858; }
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+    }
+  </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col">
+  <!-- ▸ NAVBAR -->
+  <header class="bg-gray-800 flex items-center justify-between h-14 px-6">
+    <div class="flex items-center gap-2 text-white font-semibold text-lg">
+      <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/><circle cx="12" cy="12" r="2.5"/></svg>
+      Mawi
+    </div>
+    <div id="profileBtn" class="flex items-center gap-2 cursor-pointer hover:opacity-80">
+      <span id="userName" class="text-sm">Usuario</span>
+      <img id="avatar" src="/Assets/avatar-placeholder.png" class="w-8 h-8 rounded-full object-cover border-2 border-gray-700"/>
+    </div>
+  </header>
 
-<!-- reutiliza la misma navbar + sidebar que tu dashboard
-     aquí mostramos sólo el contenido central -->
-<main class="p-6">
-  <h1 class="text-2xl font-semibold mb-4">Número de Biomos</h1>
+  <div class="flex flex-grow overflow-hidden">
+    <!-- ▸ SIDEBAR completo -->
+    <aside id="sidebar" class="bg-gray-900 w-64 flex flex-col transition-all duration-200">
+      <button id="toggleSide" class="self-end mt-3 mr-2 p-1 rounded hover:bg-gray-700">
+        <i data-feather="chevron-left" class="w-4 h-4 text-gray-300"></i>
+      </button>
+      <nav class="flex flex-col gap-6 mt-6 px-6 text-sm">
+        <a href="/dashboard.html"
+           class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="home" class="w-4 h-4"></i>
+          <span class="sidebar-label">Inicio</span>
+        </a>
+        <a href="/FrontEnd/Asistentes/Biomo/biomo.html" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="activity" class="w-4 h-4"></i><span class="sidebar-label">Mis Biomos</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="file-text" class="w-4 h-4"></i><span class="sidebar-label">Nuevas Convocatorias</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="layers" class="w-4 h-4"></i><span class="sidebar-label">Explorador Anteproyectos</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="message-circle" class="w-4 h-4"></i><span class="sidebar-label">Chatbot</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="play-circle" class="w-4 h-4"></i><span class="sidebar-label">Videojuego</span>
+        </a>
+      </nav>
+      <button id="logoutBtn" class="flex items-center gap-3 hover:text-red-400 py-2 px-6 mt-6">
+        <i data-feather="log-out" class="w-4 h-4"></i><span class="sidebar-label">Cerrar sesión</span>
+      </button>
+      <button id="supportBtn" class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500">
+        <i data-feather="phone" class="w-4 h-4 text-green-500"></i><span class="text-sm sidebar-label">Soporte</span>
+      </button>
+    </aside>
 
-  <!-- Tabla -->
-  <div class="overflow-x-auto">
-    <table class="min-w-full bg-gray-800 rounded-lg text-sm">
-      <thead class="bg-gray-700 text-left">
-        <tr>
-          <th class="px-4 py-2">ID</th>
-          <th class="px-4 py-2">Nombre</th>
-          <th class="px-4 py-2">Fecha de creación</th>
-          <th class="px-4 py-2">Estado</th>
-        </tr>
-      </thead>
-      <tbody id="tbody" class="divide-y divide-gray-700"></tbody>
-    </table>
+    <main class="flex-1 overflow-y-auto p-8">
+      <h1 class="text-2xl font-semibold mb-6">Mis Reportes</h1>
+      <div id="biomos-list" class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3"></div>
+    </main>
   </div>
-</main>
+ <script>
+  feather.replace();
+  const sidebar = document.getElementById('sidebar');
+  const toggleBtn = document.getElementById('toggleSide');
+  toggleBtn.onclick = () => {
+    sidebar.classList.toggle('w-64');
+    sidebar.classList.toggle('w-16');
+    sidebar.classList.toggle('collapsed');
+  };
 
-<script>
-  const tbody = document.getElementById('tbody');
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const token = localStorage.getItem('token');
+  if (!user.id_usuario || !token) {
+    document.body.innerHTML = `
+      <h1>Mawi</h1>
+      <p>Inicia sesión o crea tu cuenta para empezar a usar Mawi y todas sus funciones.</p>
+      <a href="/login.html">Iniciar sesión</a> <a href="/CrearCuenta/crear.html">Crear cuenta</a>
+    `;
+    throw new Error("Usuario no autenticado");
+  }
 
-  fetch('http://localhost:3000/api/biomos', {
-    headers: { Authorization: 'Bearer ' + token }
-  })
-  .then(r => r.json())
-  .then(arr => {
-    tbody.innerHTML = arr.map(b => `
-      <tr class="hover:bg-gray-700">
-        <td class="px-4 py-2">${b.id_biomo}</td>
-        <td class="px-4 py-2">${b.nombre}</td>
-        <td class="px-4 py-2">${b.fecha_creacion.slice(0,10)}</td>
-        <td class="px-4 py-2">${b.estado || '—'}</td>
-      </tr>`).join('');
-  })
-  .catch(err => {
-    console.error(err);
-    tbody.innerHTML =
-      '<tr><td colspan="4" class="px-4 py-4 text-center text-red-400">Error al cargar biomos</td></tr>';
+  document.getElementById('userName').textContent = user.nombre;
+  let fotoRuta = localStorage.getItem('foto_perfil') || '';
+  if (!fotoRuta.startsWith('/')) fotoRuta = '/' + fotoRuta;
+  document.getElementById('avatar').src = fotoRuta || '/Assets/avatar-placeholder.png';
+
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    sessionStorage.clear();
+    localStorage.clear();
+    location.href = '/index.html';
   });
+
+  document.getElementById('profileBtn').addEventListener('click', () => {
+    location.href = '/Perfil/perfil.html';
+  });
+
+  async function fetchReportes() {
+    try {
+      const response = await fetch(`/api/reportes/usuario/${user.id_usuario}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await response.json();
+      const contenedor = document.getElementById("biomos-list");
+
+   data.forEach(reporte => {
+  let primeraImagen = null;
+  try {
+    const parsed = JSON.parse(reporte.imagenes || '[]');
+    primeraImagen = Array.isArray(parsed) ? parsed[0] : parsed;
+  } catch {
+    primeraImagen = reporte.imagenes;
+  }
+
+  /* ← AQUÍ */
+  console.log("reporte.id:", reporte.id_reporte, "imagen:", primeraImagen);
+
+  const imageSrc = primeraImagen
+    ? `/imagesBiomos/${primeraImagen}`   // <- mira la carpeta
+    : '/Assets/avatar-placeholder.png';
+    
+  const div = document.createElement("div");
+  div.className = "card";
+  div.innerHTML = `
+<img src="${imageSrc}" alt="Preview">
+    <h3 class="text-lg font-bold mt-2">Reporte #${reporte.id_reporte}</h3>
+    <p><strong>Tipo:</strong> ${reporte.record_type}</p>
+    <p><strong>Ecosistema:</strong> ${reporte.tipo_ecosistema}</p>
+    <p><strong>Fecha:</strong> ${new Date(reporte.fecha_reporte).toLocaleDateString()}</p>
+  `;
+  div.onclick = () => {
+  window.location.href = `reporte.html?id=${reporte.id_reporte}`;
+  };
+  contenedor.appendChild(div);
+});
+    } catch (err) {
+      console.error("Error al cargar reportes:", err);
+    }
+  }
+
+  fetchReportes();
 </script>
-</body>
+  </body>
 </html>

@@ -2,7 +2,7 @@
    Rutas protegidas - Solo SUPER-ADMIN
 -------------------------------------------------------------------*/
 import express      from 'express';
-import { db }       from '../db.js';
+import db from '../db.js'; // ✅ importación por defecto
 import verifyToken  from '../middlewares/verifyToken.js';
 import isSuperAdmin from '../middlewares/isSuperAdmin.js';
 

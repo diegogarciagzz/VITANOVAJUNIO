@@ -13,6 +13,8 @@ import adminRoutes  from './routes/admin.js';
 import usersRoutes  from './routes/users.js';
 import superRoutes  from './routes/superAdmin.js';
 import biomosRoutes from './routes/biomos.js';
+import reportesRoutes from './routes/reportes.js';
+
 
 dotenv.config();
 const app  = express();
@@ -47,6 +49,10 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/biomos', biomosRoutes);
 app.use('/api/super', superRoutes);
+app.use('/api/reportes', reportesRoutes);
+app.use('/imagesBiomos', express.static(path.join(FRONT_PATH, 'imagesBiomos')));
+
+
 
 /* ───────── páginas de recuperar contraseña ───────── */
 app.get('/recuperarContraseña/cambiar-contraseña.html', (_, res) =>
@@ -69,12 +75,21 @@ app.get('/', (_, res) =>
   res.sendFile(path.join(FRONT_PATH, 'index.html'))
 );
 
+app.get('/FrontEnd/Asistentes/Biomo/biomo.html', (_, res) =>
+  res.sendFile(path.join(FRONT_PATH, 'Asistentes', 'Biomo', 'biomo.html'))
+);
+
+// Ruta explícita para reportes.html
+app.get('/FrontEnd/Asistentes/Biomo/reporte.html', (req, res) => {
+  res.sendFile(path.join(FRONT_PATH, 'Asistentes', 'Biomo', 'reporte.html'));
+});
+
 /* ───────── fallback SPA → index.html ─────────
    Cualquier ruta que NO empiece con /api/ sirve al front
 */
-app.get('/*', (_, res) =>
+/* app.get('/*', (_, res) =>
   res.sendFile(path.join(FRONT_PATH, 'index.html'))
-);
+);*/
 
 /* ───────── start ───────── */
 app.listen(PORT, () =>

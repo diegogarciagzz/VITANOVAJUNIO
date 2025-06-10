@@ -1,5 +1,5 @@
 // Backend/controllers/authController.js  (columna 'contrasena' sin eñe)
-import { db }       from '../db.js';
+import db from '../db.js'; // ✅ importación por defecto
 import bcrypt       from 'bcryptjs';
 import jwt          from 'jsonwebtoken';
 import crypto       from 'crypto';

@@ -1,5 +1,5 @@
 // Backend/controllers/usersController.js
-import { db } from '../db.js';
+import db from '../db.js'; // ✅ importación por defecto
 import bcrypt from 'bcryptjs';
 import path from 'path';
 import fs   from 'fs';
