@@ -6,6 +6,7 @@ import cors              from 'cors';
 import dotenv            from 'dotenv';
 import path              from 'path';
 import { fileURLToPath } from 'url';
+import fetch from 'node-fetch';
 
 import faunaRoutes  from './routes/fauna.js';
 import authRoutes   from './routes/auth.js';
@@ -84,6 +85,31 @@ app.get('/FrontEnd/Asistentes/Biomo/reporte.html', (req, res) => {
   res.sendFile(path.join(FRONT_PATH, 'Asistentes', 'Biomo', 'reporte.html'));
 });
 
+app.get('/FrontEnd/Asistentes/Convocatorias/chat.html', (req, res) => {
+  res.sendFile(path.join(FRONT_PATH, 'Asistentes', 'Convocatorias', 'chat.html'));
+});
+app.post('/api/chat', async (req, res) => {
+  const { messages } = req.body;
+  try {
+    const groq = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer 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',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'llama3-8b-8192',
+        messages,
+        temperature: 0.7
+      })
+    });
+    const data = await groq.json();
+    res.json(data);
+  } catch (err) {
+    console.error('❌ Error Groq:', err);
+    res.status(500).json({ error: 'Error de conexión con Groq.' });
+  }
+});
 /* ───────── fallback SPA → index.html ─────────
    Cualquier ruta que NO empiece con /api/ sirve al front
 */

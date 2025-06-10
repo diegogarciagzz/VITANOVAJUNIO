@@ -1,4 +1,4 @@
-<!-- Ubicación: /FrontEnd/Asistentes/Biomo/reporte.html -->
+<!-- Ubicación: /FrontEnd/Asistentes/Biomo/reportes.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,7 +9,7 @@
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
     body { background:#353535; color:#fff; font-family:Inter,system-ui,sans-serif; }
-    .img-preview{ max-width:400px; border-radius:.5rem; margin-top:1rem; object-fit:cover; }
+    .sidebar-label { transition:opacity .2s; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -21,77 +21,71 @@
     </div>
     <div id="profileBtn" class="flex items-center gap-2 cursor-pointer hover:opacity-80">
       <span id="userName" class="text-sm">Usuario</span>
-      <img id="avatar" src="/Assets/avatar-placeholder.png" class="w-8 h-8 rounded-full object-cover border-2 border-gray-700"/>
+      <img id="avatar" src="/Assets/avatar-placeholder.png" class="w-8 h-8 rounded-full object-cover border-2 border-gray-700" />
     </div>
   </header>
 
   <div class="flex flex-grow overflow-hidden">
-    <!-- ▸ SIDEBAR completo -->
+    <!-- ▸ SIDEBAR (mismos enlaces que en Biomo) -->
     <aside id="sidebar" class="bg-gray-900 w-64 flex flex-col transition-all duration-200">
-      <button id="toggleSide" class="self-end mt-3 mr-2 p-1 rounded hover:bg-gray-700">
-        <i data-feather="chevron-left" class="w-4 h-4 text-gray-300"></i>
-      </button>
+      <button id="toggleSide" class="self-end mt-3 mr-2 p-1 rounded hover:bg-gray-700"><i data-feather="chevron-left" class="w-4 h-4 text-gray-300"></i></button>
       <nav class="flex flex-col gap-6 mt-6 px-6 text-sm">
-        <a href="/dashboard.html"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="home" class="w-4 h-4"></i>
-          <span class="sidebar-label">Inicio</span>
-        </a>
-        <a href="/FrontEnd/Asistentes/Biomo/biomo.html" class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="activity" class="w-4 h-4"></i><span class="sidebar-label">Mis Biomos</span>
-        </a>
-        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="file-text" class="w-4 h-4"></i><span class="sidebar-label">Nuevas Convocatorias</span>
-        </a>
-        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="layers" class="w-4 h-4"></i><span class="sidebar-label">Explorador Anteproyectos</span>
-        </a>
-        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="message-circle" class="w-4 h-4"></i><span class="sidebar-label">Chatbot</span>
-        </a>
-        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="play-circle" class="w-4 h-4"></i><span class="sidebar-label">Videojuego</span>
-        </a>
+        <a href="/FrontEnd/Asistentes/Biomo/biomo.html" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="activity" class="w-4 h-4"></i><span class="sidebar-label">Mis Biomos</span></a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="file-text" class="w-4 h-4"></i><span class="sidebar-label">Nuevas Convocatorias</span></a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="layers" class="w-4 h-4"></i><span class="sidebar-label">Explorador Anteproyectos</span></a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="message-circle" class="w-4 h-4"></i><span class="sidebar-label">Chatbot</span></a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="play-circle" class="w-4 h-4"></i><span class="sidebar-label">Videojuego</span></a>
       </nav>
-      <button id="logoutBtn" class="flex items-center gap-3 hover:text-red-400 py-2 px-6 mt-6">
-        <i data-feather="log-out" class="w-4 h-4"></i><span class="sidebar-label">Cerrar sesión</span>
-      </button>
-      <button id="supportBtn" class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500">
-        <i data-feather="phone" class="w-4 h-4 text-green-500"></i><span class="text-sm sidebar-label">Soporte</span>
-      </button>
+      <button id="logoutBtn" class="flex items-center gap-3 hover:text-red-400 py-2 px-6 mt-6"><i data-feather="log-out" class="w-4 h-4"></i><span class="sidebar-label">Cerrar sesión</span></button>
+      <button id="supportBtn" class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500"><i data-feather="phone" class="w-4 h-4 text-green-500"></i><span class="text-sm sidebar-label">Soporte</span></button>
     </aside>
 
-  <main class="flex-1 overflow-y-auto p-8">
-    <h1 class="text-2xl font-semibold mb-4">Detalle del Reporte</h1>
-    <div id="reporte-detalle" class="space-y-3 text-sm"></div>
-  </main>
+    <!-- ▸ CONTENIDO -->
+    <main class="flex-1 overflow-y-auto p-8">
+      <div id="reporte-card" class="bg-gray-800/50 p-6 rounded-xl max-w-3xl mx-auto shadow-lg">
+        <h1 class="text-2xl font-bold mb-4">Detalle del Reporte</h1>
+        <div id="reporte-detalle" class="space-y-3 text-sm"></div>
+      </div>
+    </main>
+  </div>
+
 <script>
 feather.replace();
-const user = JSON.parse(localStorage.getItem('user')||'{}');
+const sidebar=document.getElementById('sidebar');
+const toggleBtn=document.getElementById('toggleSide');
+toggleBtn.onclick=()=>{sidebar.classList.toggle('w-64');sidebar.classList.toggle('w-16');sidebar.classList.toggle('collapsed');};
+
+const user=JSON.parse(localStorage.getItem('user')||'{}');
 const token=localStorage.getItem('token');
 if(!user.id_usuario||!token){document.body.innerHTML='<h1>Mawi</h1><p>Inicia sesión</p>';throw new Error('No auth');}
-user.nombre&&(document.getElementById('userName').textContent=user.nombre);
-const foto=localStorage.getItem('foto_perfil')||'';
-document.getElementById('avatar').src=foto.startsWith('/')?foto:'/'+foto;
+document.getElementById('userName').textContent=user.nombre;
+const foto=localStorage.getItem('foto_perfil')||'';document.getElementById('avatar').src=foto.startsWith('/')?foto:'/'+foto;
+
+document.getElementById('logoutBtn').onclick=()=>{sessionStorage.clear();localStorage.clear();location.href='/index.html';};
+document.getElementById('profileBtn').onclick=()=>location.href='/Perfil/perfil.html';
+
+document.getElementById('supportBtn').onclick=()=>location.href='mailto:soporte@mawi.com';
+
 const id=new URLSearchParams(window.location.search).get('id');
 (async()=>{
  try{
   const r=await fetch(`/api/reportes/${id}`,{headers:{Authorization:`Bearer ${token}`}});
   const d=await r.json();
   let imgs=[];
-  try{const p=JSON.parse(d.imagenes||'[]');imgs=Array.isArray(p)?p:[p]}catch{if(d.imagenes)imgs=[d.imagenes];}
-  const htmlImgs=imgs.map(i=>`<img src="/imagesBiomos/${i}" class="img-preview" onerror="this.src='/Assets/avatar-placeholder.png'">`).join('');
+  try{const p=JSON.parse(d.imagenes||'[]');imgs=Array.isArray(p)?p:[p];}catch{if(d.imagenes)imgs=[d.imagenes];}
+  const imgHtml=imgs.map(i=>`<img src='/imagesBiomos/${i}' class='rounded-lg shadow-md w-full max-w-sm' onerror="this.src='/Assets/avatar-placeholder.png'">`).join('');
   document.getElementById('reporte-detalle').innerHTML=`
     <p><strong>ID:</strong> ${d.id_reporte}</p>
-    <p><strong>Tipo:</strong> ${d.record_type}</p>
+    <p><strong>Tipo:</strong> ${d.record_type.replaceAll('_',' ')}</p>
     <p><strong>Ecosistema:</strong> ${d.tipo_ecosistema}</p>
     <p><strong>Clima:</strong> ${d.weather_condition}</p>
     <p><strong>Estación:</strong> ${d.season}</p>
     <p><strong>Ubicación:</strong> ${d.ubicacion}</p>
-    <p><strong>Observaciones:</strong> ${d.observaciones}</p>
+    <p><strong>Observaciones:</strong> ${d.observaciones||'—'}</p>
     <p><strong>Fecha:</strong> ${new Date(d.fecha_reporte).toLocaleString()}</p>
-    <div class="pt-4"><strong>Imágenes:</strong><br>${htmlImgs}</div>`;
- }catch(e){console.error(e);}
+    <h2 class='mt-4 font-semibold'>Imágenes</h2>
+    <div class='flex flex-wrap gap-4'>${imgHtml}</div>`;
+ }catch(e){console.error(e);document.getElementById('reporte-detalle').innerHTML='<p>Error al cargar reporte.</p>';}
 })();
 </script>
 </body>

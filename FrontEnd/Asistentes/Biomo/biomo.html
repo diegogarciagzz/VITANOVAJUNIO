@@ -8,27 +8,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
-    body {
-      background: #353535;
-      color: #fff;
-      font-family: Inter, system-ui, sans-serif;
-    }
-    .sidebar-label { transition: opacity 0.2s; }
-    .card {
-      background: #505050;
-      border-radius: 1rem;
-      padding: 1rem;
-      width: 280px;
-      transition: background 0.2s;
-      cursor: pointer;
-    }
-    .card:hover { background: #585858; }
-    .card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 0.5rem;
-    }
+    body { background:#353535;color:#fff;font-family:Inter,system-ui,sans-serif; }
+    .card{background:#505050;border-radius:1rem;padding:1rem;width:280px;cursor:pointer;transition:background .2s;}
+    .card:hover{background:#585858}
+    .card img{width:100%;height:180px;object-fit:cover;border-radius:.5rem}
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -45,126 +28,103 @@
   </header>
 
   <div class="flex flex-grow overflow-hidden">
-    <!-- ▸ SIDEBAR completo -->
+    <!-- ▸ SIDEBAR (idéntica al dashboard) -->
     <aside id="sidebar" class="bg-gray-900 w-64 flex flex-col transition-all duration-200">
-      <button id="toggleSide" class="self-end mt-3 mr-2 p-1 rounded hover:bg-gray-700">
-        <i data-feather="chevron-left" class="w-4 h-4 text-gray-300"></i>
-      </button>
+      <button id="toggleSide" class="self-end mt-3 mr-2 p-1 rounded hover:bg-gray-700"><i data-feather="chevron-left" class="w-4 h-4 text-gray-300"></i></button>
       <nav class="flex flex-col gap-6 mt-6 px-6 text-sm">
-        <a href="/dashboard.html"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="home" class="w-4 h-4"></i>
-          <span class="sidebar-label">Inicio</span>
-        </a>
-        <a href="/FrontEnd/Asistentes/Biomo/biomo.html" class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="activity" class="w-4 h-4"></i><span class="sidebar-label">Mis Biomos</span>
-        </a>
-        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="file-text" class="w-4 h-4"></i><span class="sidebar-label">Nuevas Convocatorias</span>
-        </a>
-        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="layers" class="w-4 h-4"></i><span class="sidebar-label">Explorador Anteproyectos</span>
-        </a>
-        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="message-circle" class="w-4 h-4"></i><span class="sidebar-label">Chatbot</span>
-        </a>
-        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="play-circle" class="w-4 h-4"></i><span class="sidebar-label">Videojuego</span>
-        </a>
+        <a href="/dashboard.html" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="home" class="w-4 h-4"></i><span class="sidebar-label">Inicio</span></a>
+        <a href="/FrontEnd/Asistentes/Biomo/biomo.html" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="activity" class="w-4 h-4"></i><span class="sidebar-label">Mis Biomos</span></a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="file-text" class="w-4 h-4"></i><span class="sidebar-label">Nuevas Convocatorias</span></a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="layers" class="w-4 h-4"></i><span class="sidebar-label">Explorador Anteproyectos</span></a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="message-circle" class="w-4 h-4"></i><span class="sidebar-label">Chatbot</span></a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="play-circle" class="w-4 h-4"></i><span class="sidebar-label">Videojuego</span></a>
       </nav>
-      <button id="logoutBtn" class="flex items-center gap-3 hover:text-red-400 py-2 px-6 mt-6">
-        <i data-feather="log-out" class="w-4 h-4"></i><span class="sidebar-label">Cerrar sesión</span>
-      </button>
-      <button id="supportBtn" class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500">
-        <i data-feather="phone" class="w-4 h-4 text-green-500"></i><span class="text-sm sidebar-label">Soporte</span>
-      </button>
+      <button id="logoutBtn" class="flex items-center gap-3 hover:text-red-400 py-2 px-6 mt-6"><i data-feather="log-out" class="w-4 h-4"></i><span class="sidebar-label">Cerrar sesión</span></button>
+      <button id="supportBtn" class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500"><i data-feather="phone" class="w-4 h-4 text-green-500"></i><span class="text-sm sidebar-label">Soporte</span></button>
     </aside>
 
+    <!-- ▸ CONTENIDO -->
     <main class="flex-1 overflow-y-auto p-8">
       <h1 class="text-2xl font-semibold mb-6">Mis Reportes</h1>
+
+      <!-- Filtros -->
+      <div class="flex flex-wrap gap-4 mb-6">
+        <div class="relative">
+          <input id="searchInput" type="text" placeholder="Buscar por ID, tipo o ecosistema" class="pl-10 pr-4 py-2 rounded-lg bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+          <i data-feather="search" class="w-4 h-4 absolute left-3 top-3 text-gray-400"></i>
+        </div>
+        <select id="filterSelect" class="bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm">
+          <option value="">Todos los tipos</option>
+          <option value="camaras_trampa">Cámaras Trampa</option>
+          <option value="validacion_cobertura">Validación Cobertura</option>
+          <option value="fauna_busqueda_libre">Fauna Búsqueda Libre</option>
+          <option value="fauna_transecto">Fauna Transecto</option>
+          <option value="fauna_punto_conteo">Fauna Punto Conteo</option>
+          <option value="variables_climaticas">Variables Climáticas</option>
+        </select>
+      </div>
+
       <div id="biomos-list" class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3"></div>
     </main>
   </div>
- <script>
-  feather.replace();
-  const sidebar = document.getElementById('sidebar');
-  const toggleBtn = document.getElementById('toggleSide');
-  toggleBtn.onclick = () => {
-    sidebar.classList.toggle('w-64');
-    sidebar.classList.toggle('w-16');
-    sidebar.classList.toggle('collapsed');
-  };
 
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const token = localStorage.getItem('token');
-  if (!user.id_usuario || !token) {
-    document.body.innerHTML = `
-      <h1>Mawi</h1>
-      <p>Inicia sesión o crea tu cuenta para empezar a usar Mawi y todas sus funciones.</p>
-      <a href="/login.html">Iniciar sesión</a> <a href="/CrearCuenta/crear.html">Crear cuenta</a>
-    `;
-    throw new Error("Usuario no autenticado");
-  }
+<script>
+feather.replace();
+const sidebar=document.getElementById('sidebar');
+const toggleBtn=document.getElementById('toggleSide');
+toggleBtn.onclick=()=>{sidebar.classList.toggle('w-64');sidebar.classList.toggle('w-16');sidebar.classList.toggle('collapsed');};
 
-  document.getElementById('userName').textContent = user.nombre;
-  let fotoRuta = localStorage.getItem('foto_perfil') || '';
-  if (!fotoRuta.startsWith('/')) fotoRuta = '/' + fotoRuta;
-  document.getElementById('avatar').src = fotoRuta || '/Assets/avatar-placeholder.png';
+const user=JSON.parse(localStorage.getItem('user')||'{}');
+const token=localStorage.getItem('token');
+if(!user.id_usuario||!token){document.body.innerHTML='<h1>Mawi</h1><p>Inicia sesión</p>';throw new Error('No auth');}
 
-  document.getElementById('logoutBtn').addEventListener('click', () => {
-    sessionStorage.clear();
-    localStorage.clear();
-    location.href = '/index.html';
+document.getElementById('userName').textContent=user.nombre;
+const foto=localStorage.getItem('foto_perfil')||'';
+document.getElementById('avatar').src=foto.startsWith('/')?foto:'/'+foto;
+
+document.getElementById('logoutBtn').onclick=()=>{sessionStorage.clear();localStorage.clear();location.href='/index.html';};
+document.getElementById('profileBtn').onclick=()=>location.href='/Perfil/perfil.html';
+
+document.getElementById('supportBtn').onclick=()=>location.href='mailto:soporte@mawi.com';
+
+let reportesCache=[];
+
+async function fetchReportes(){
+  const r=await fetch(`/api/reportes/usuario/${user.id_usuario}`,{headers:{Authorization:`Bearer ${token}`}});
+  reportesCache=await r.json();
+  renderReportes(reportesCache);
+}
+
+function renderReportes(arr){
+  const cont=document.getElementById('biomos-list');
+  cont.innerHTML='';
+  arr.forEach(rep=>{
+    let img=null;
+    try{const p=JSON.parse(rep.imagenes||'[]');img=Array.isArray(p)?p[0]:p;}catch{img=rep.imagenes;}
+    const src=img?`/imagesBiomos/${img}`:'/Assets/avatar-placeholder.png';
+    const div=document.createElement('div');div.className='card';div.innerHTML=`<img src='${src}' class='w-full h-44 object-cover rounded-lg'><h3 class='text-lg font-bold mt-2'>Reporte #${rep.id_reporte}</h3><p><strong>Tipo:</strong> ${rep.record_type.replaceAll('_',' ')}</p><p><strong>Ecosistema:</strong> ${rep.tipo_ecosistema}</p><p><strong>Fecha:</strong> ${new Date(rep.fecha_reporte).toLocaleDateString()}</p>`;div.onclick=()=>location.href=`reporte.html?id=${rep.id_reporte}`;cont.appendChild(div);
   });
+}
 
-  document.getElementById('profileBtn').addEventListener('click', () => {
-    location.href = '/Perfil/perfil.html';
+// Filtro en tiempo real
+const searchInput=document.getElementById('searchInput');
+const filterSelect=document.getElementById('filterSelect');
+
+function applyFilters(){
+  const query=searchInput.value.toLowerCase();
+  const typeFilter=filterSelect.value;
+  const filtered=reportesCache.filter(r=>{
+    const matchQuery=!query||r.id_reporte.toString().includes(query)||r.record_type.toLowerCase().includes(query)||r.tipo_ecosistema.toLowerCase().includes(query);
+    const matchType=!typeFilter||r.record_type===typeFilter;
+    return matchQuery&&matchType;
   });
+  renderReportes(filtered);
+}
 
-  async function fetchReportes() {
-    try {
-      const response = await fetch(`/api/reportes/usuario/${user.id_usuario}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await response.json();
-      const contenedor = document.getElementById("biomos-list");
+searchInput.oninput=applyFilters;
+filterSelect.onchange=applyFilters;
 
-   data.forEach(reporte => {
-  let primeraImagen = null;
-  try {
-    const parsed = JSON.parse(reporte.imagenes || '[]');
-    primeraImagen = Array.isArray(parsed) ? parsed[0] : parsed;
-  } catch {
-    primeraImagen = reporte.imagenes;
-  }
-
-  /* ← AQUÍ */
-  console.log("reporte.id:", reporte.id_reporte, "imagen:", primeraImagen);
-
-  const imageSrc = primeraImagen
-    ? `/imagesBiomos/${primeraImagen}`   // <- mira la carpeta
-    : '/Assets/avatar-placeholder.png';
-    
-  const div = document.createElement("div");
-  div.className = "card";
-  div.innerHTML = `
-<img src="${imageSrc}" alt="Preview">
-    <h3 class="text-lg font-bold mt-2">Reporte #${reporte.id_reporte}</h3>
-    <p><strong>Tipo:</strong> ${reporte.record_type}</p>
-    <p><strong>Ecosistema:</strong> ${reporte.tipo_ecosistema}</p>
-    <p><strong>Fecha:</strong> ${new Date(reporte.fecha_reporte).toLocaleDateString()}</p>
-  `;
-  div.onclick = () => {
-  window.location.href = `reporte.html?id=${reporte.id_reporte}`;
-  };
-  contenedor.appendChild(div);
-});
-    } catch (err) {
-      console.error("Error al cargar reportes:", err);
-    }
-  }
-
-  fetchReportes();
+fetchReportes();
 </script>
-  </body>
+</body>
 </html>

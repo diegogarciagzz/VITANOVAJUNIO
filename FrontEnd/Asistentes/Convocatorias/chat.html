@@ -1,61 +1,129 @@
+<!-- Ubicación: /FrontEnd/Asistentes/Convocatorias/chat.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Asistente de Convocatorias - Chat</title>
-  <link rel="stylesheet" href="../../Estilos/styles.css" />
-  <script defer>
-    function toggleSidebar() {
-      document.body.classList.toggle('menu-open');
-    }
-  </script>
+  <title>Mawi – Chatbot</title>
+
+  <!-- Tailwind + Feather -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <style>
+    body{background:#353535;color:#fff;font-family:Inter,system-ui,sans-serif;}
+    #sidebar.collapsed .sidebar-label{opacity:0;pointer-events:none;transition:opacity .2s;}
+    .sidebar-label{transition:opacity .2s;}
+  </style>
 </head>
-<body class="dashboard">
+<body class="min-h-screen flex flex-col">
 
-  <div class="topbar">
-    <div class="logo">Mawi</div>
-    <div class="user">Usuario</div>
-  </div>
+  <!-- ▸ NAVBAR -->
+  <header class="bg-gray-800 flex items-center justify-between h-14 px-6">
+    <div class="flex items-center gap-2 text-white font-semibold text-lg">
+      <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+        <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/><circle cx="12" cy="12" r="2.5"/>
+      </svg>
+      Mawi
+    </div>
+    <div id="profileBtn" class="flex items-center gap-2 cursor-pointer hover:opacity-80">
+      <span id="userName" class="text-sm">Usuario</span>
+      <img id="avatar" src="/Assets/avatar-placeholder.png" class="w-8 h-8 rounded-full object-cover border-2 border-gray-700"/>
+    </div>
+  </header>
 
-  <div class="biomo-wrapper">
-    <button class="toggle-menu" onclick="toggleSidebar()">&#10094;</button>
+  <div class="flex flex-grow overflow-hidden">
+    <!-- ▸ SIDEBAR -->
+    <aside id="sidebar" class="bg-gray-900 w-64 flex flex-col transition-all duration-200">
+      <button id="toggleSide" class="self-end mt-3 mr-2 p-1 rounded hover:bg-gray-700">
+        <i data-feather="chevron-left" class="w-4 h-4 text-gray-300"></i>
+      </button>
 
-    <aside class="sidebar">
-      <nav>
-        <ul>
-          <li><a href="../../dashboard.html">Inicio</a></li>
-          <li><a href="../Biomo/biomo.html">Asistente de Mi Biomo</a></li>
-          <li><a href="../Anteproyectos/anteproyectos.html">Asistente Explorador de Anteproyectos</a></li>
-          <li><a href="#">Asistente de Convocatorias</a></li>
-        </ul>
+      <nav class="flex flex-col gap-6 mt-6 px-6 text-sm">
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="activity"></i><span class="sidebar-label">Asistente Biomo</span></a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="file-text"></i><span class="sidebar-label">Nuevas Convocatorias</span></a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="layers"></i><span class="sidebar-label">Explorador Anteproyectos</span></a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="message-circle"></i><span class="sidebar-label">Chatbot</span></a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="play-circle"></i><span class="sidebar-label">Videojuego</span></a>
       </nav>
-      <div class="sidebar-footer">
-        <button class="support-button">📞 Contacta con el soporte</button>
-      </div>
+
+      <button id="logoutBtn" class="flex items-center gap-3 hover:text-red-400 py-2 px-6 mt-6"><i data-feather="log-out"></i><span class="sidebar-label">Cerrar sesión</span></button>
+      <button id="supportBtn" class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500"><i data-feather="phone" class="text-green-500"></i><span class="text-sm sidebar-label">Soporte</span></button>
     </aside>
 
-    <main class="biomo-content">
-      <h2>Asistente de Convocatorias</h2>
-
-      <div class="chat-preview">
-        <div class="message-left">
-          Hola, ¿cómo te puedo ayudar con esta convocatoria?
-          <div class="timestamp">10:13</div>
+    <!-- ▸ CONTENIDO -->
+    <main class="flex-1 overflow-y-auto p-8 flex flex-col items-center justify-center">
+      <div id="chatbot" class="w-full max-w-3xl bg-[#2e2e2e] text-white p-6 rounded-xl shadow relative">
+        <h2 class="text-2xl font-bold mb-4 text-center">Awaq ChatBot 🐢</h2>
+        <img src="https://em-content.zobj.net/source/twitter/376/turtle_1f422.png" alt="tortuga" class="absolute bottom-3 left-3 w-12 h-12">
+        <div id="chatWindow" class="bg-[#1a1a1a] h-[500px] overflow-y-scroll p-4 rounded mb-4 border border-gray-700 text-base space-y-3">
+          <div><strong>AWAQ Assistant:</strong> ¡Hola! ¿En qué puedo ayudarte?</div>
         </div>
-
-        <div class="message-right">
-          Quiero hacer un proyecto de conservación ambiental.
-          <div class="timestamp">10:14</div>
+        <div class="flex gap-2">
+          <input id="chatInput" type="text" placeholder="Escribe algo…" class="flex-grow p-3 rounded-md bg-[#3a3a3a] border border-gray-600 text-white placeholder-gray-400 text-base"/>
+          <button id="sendBtn" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-md text-base">Enviar</button>
         </div>
-      </div>
-
-      <div class="chatbox">
-        <input type="text" placeholder="Escribe..." />
-        <button>↑</button>
       </div>
     </main>
   </div>
 
+<script>
+feather.replace();
+
+// Toggle sidebar
+document.getElementById('toggleSide').onclick = () => {
+  const sb = document.getElementById('sidebar');
+  sb.classList.toggle('w-64'); sb.classList.toggle('w-16'); sb.classList.toggle('collapsed');
+};
+
+// User info
+const usr = JSON.parse(localStorage.getItem('user')||'{}');
+document.getElementById('userName').textContent = usr.nombre || 'Usuario';
+const fp = localStorage.getItem('foto_perfil') || '';
+document.getElementById('avatar').src = fp ? (fp.startsWith('/')?fp:'/'+fp) : '/Assets/avatar-placeholder.png';
+
+// Logout / soporte / perfil
+document.getElementById('logoutBtn').onclick = () => { sessionStorage.clear(); localStorage.clear(); location.href='/index.html'; };
+document.getElementById('supportBtn').onclick = () => location.href='mailto:soporte@mawi.com';
+document.getElementById('profileBtn').onclick = () => location.href='/Perfil/perfil.html';
+
+// Chatbot
+const chatWindow = document.getElementById('chatWindow');
+const chatInput  = document.getElementById('chatInput');
+
+async function enviarMensaje(){
+  const texto = chatInput.value.trim();
+  if(!texto) return;
+
+  chatWindow.insertAdjacentHTML('beforeend', `
+    <div class="text-right"><strong>Tú:</strong> ${texto}</div>`);
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+  chatInput.value = '';
+
+  try{
+    const res = await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        messages:[
+          {role:'system',content:'Eres un asistente amigable.'},
+          {role:'user',content:texto}
+        ]
+      })
+    });
+    const data = await res.json();
+    const reply = data.choices?.[0]?.message?.content || '⚠️ No hubo respuesta.';
+    chatWindow.insertAdjacentHTML('beforeend', `
+      <div><strong>AWAQ Assistant:</strong> ${reply}</div>`);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }catch{
+    chatWindow.insertAdjacentHTML('beforeend', `
+      <div class="text-red-400">⚠️ Error al conectar con el servidor.</div>`);
+  }
+}
+
+document.getElementById('sendBtn').onclick = enviarMensaje;
+chatInput.addEventListener('keydown', e => { if(e.key === 'Enter') enviarMensaje(); });
+</script>
 </body>
 </html>
