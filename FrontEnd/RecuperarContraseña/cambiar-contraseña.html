@@ -3,27 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cambiar contraseña</title>
-  <link rel="stylesheet" href="../Estilos/styles.css" />
+  <title>Mawi - Cambio de contraseña</title>
+  <link rel="stylesheet" href="/Estilos/general-inicio.css" />
 </head>
-<body>
-  <div class="centered-page">
-    <div class="card">
-      <h2 class="subtitle">Cambio de contraseña</h2>
+<body class="recuperar">
+  <div class="card-container recuperar-card">
+    <h2 class="tittle">Cambio de contraseña</h2>
 
-      <form id="changeForm" class="form">
-        <!-- Campo oculto para el token -->
-        <input type="hidden" id="token" />
+    <form id="changeForm" class="login-form">
+      <!-- Campo oculto para el token -->
+      <input type="hidden" id="token" />
 
-        <label for="new-password" class="label">Nueva contraseña</label>
-        <input type="password" id="new-password" class="input" placeholder="Escribe la nueva contraseña" required />
+      <label for="new-password">Nueva contraseña</label>
+      <input type="password" id="new-password" placeholder="Escribe..." required />
 
-        <label for="confirm-password" class="label">Confirmar nueva contraseña</label>
-        <input type="password" id="confirm-password" class="input" placeholder="Confirma la nueva contraseña" required />
+      <label for="confirm-password">Confirmar nueva contraseña</label>
+      <input type="password" id="confirm-password" placeholder="Escribe..." required />
 
-        <button type="submit" class="btn">Guardar</button>
-      </form>
-    </div>
+      <button type="submit" class="btn-green">Guardar</button>
+    </form>
+
+    <p class="support-link"><a href="#">¿Necesitas ayuda? Contacta con nosotros</a></p>
   </div>
 
   <script>
@@ -60,13 +60,12 @@
         const data = await response.json();
 
         if (response.ok) {
-  alert(data.message);
-  window.location.href = 'login.html'; // Redirige al login
-}
- else {
+          alert(data.message);
+          // 🔁 Redirección actualizada:
+          window.location.href = 'confirmacion-contraseña.html';
+        } else {
           alert(data.error);
         }
-
       } catch (err) {
         console.error('Error al cambiar la contraseña:', err);
         alert('Error al cambiar la contraseña');
