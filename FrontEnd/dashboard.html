@@ -183,34 +183,26 @@
     <!-- ▸ CONTENIDO -------------------------------------------------- -->
     <main class="flex-1 overflow-y-auto p-8 flex flex-col items-center">
       <div class="flex flex-wrap justify-center gap-10">
-        <!-- Card 1 -->
-        <div class="card">
-          <img src="/Assets/IconoBiomo2.png" alt="Mi Biomo" />
-          <h3>Asistente de<br />Mi Biomo</h3>
-          <p>
-            El asistente te ayudará a conocer todos los datos sobre tu
-            biomonitoreo y a subir datos nuevos.
-          </p>
-        </div>
+       <!-- Card 1: Mi Biomo -->
+<a href="/FrontEnd/Asistentes/Biomo/biomo.html" class="card hover:no-underline">
+  <img src="/Assets/IconoBiomo2.png" alt="Mi Biomo" />
+  <h3>Asistente de<br />Mi Biomo</h3>
+  <p>El asistente te ayudará a conocer todos los datos sobre tu biomonitoreo y a subir datos nuevos.</p>
+</a>
 
-        <!-- Card 2 -->
-        <div class="card">
-          <img src="/Assets/IconoConvocatorias2.png" alt="Convocatorias" />
-          <h3>Asistente de<br />Nuevas Convocatorias</h3>
-          <p>
-            Participa en nuevas convocatorias y registra los datos de tu
-            anteproyecto.
-          </p>
-        </div>
+<!-- Card 2: Nuevas Convocatorias -->
+<a href="/Asistentes/Convocatorias/convocatorias.html" class="card hover:no-underline">
+  <img src="/Assets/IconoConvocatorias2.png" alt="Convocatorias" />
+  <h3>Asistente de<br />Nuevas Convocatorias</h3>
+  <p>Participa en nuevas convocatorias y registra los datos de tu anteproyecto.</p>
+</a>
 
-        <!-- Card 3 -->
-        <div class="card">
-          <img src="/Assets/IconoAnteproyectos2.png" alt="Anteproyectos" />
-          <h3>Asistente<br />Explorador de Anteproyectos</h3>
-          <p>
-            Interactúa con convocatorias abiertas y formula anteproyectos.
-          </p>
-        </div>
+<!-- Card 3: Explorador Anteproyectos -->
+<a href="/Asistentes/Convocatorias/anteproyectos.html" class="card hover:no-underline">
+  <img src="/Assets/IconoAnteproyectos2.png" alt="Anteproyectos" />
+  <h3>Asistente<br />Explorador de Anteproyectos</h3>
+  <p>Interactúa con convocatorias abiertas y formula anteproyectos.</p>
+</a>
       </div>
 
       <button class="btn-soporte" id="centerSupport">
@@ -263,20 +255,6 @@ if (fotoRuta) {
         localStorage.removeItem('foto_perfil');
         // Redirijo a la página de inicio
         location.href = '/index.html';
-      });
-    }
-
-    // 5) Botón Soporte (mail)
-    const btnSupport = document.getElementById('supportBtn');
-    if (btnSupport) {
-      btnSupport.addEventListener('click', () => {
-        location.href = 'mailto:soporte@mawi.com';
-      });
-    }
-    const btnCenterSupport = document.getElementById('centerSupport');
-    if (btnCenterSupport) {
-      btnCenterSupport.addEventListener('click', () => {
-        location.href = 'mailto:soporte@mawi.com';
       });
     }
 
