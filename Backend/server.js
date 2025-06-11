@@ -7,6 +7,7 @@ import dotenv            from 'dotenv';
 import path              from 'path';
 import { fileURLToPath } from 'url';
 import fetch from 'node-fetch';
+import fs from 'fs';
 
 import faunaRoutes  from './routes/fauna.js';
 import authRoutes   from './routes/auth.js';
@@ -15,6 +16,7 @@ import usersRoutes  from './routes/users.js';
 import superRoutes  from './routes/superAdmin.js';
 import biomosRoutes from './routes/biomos.js';
 import reportesRoutes from './routes/reportes.js';
+import convocatoriasRoutes from './routes/convocatorias.js';
 
 
 dotenv.config();
@@ -25,16 +27,8 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 
-/* ───────── paths estáticos ─────────
-   FrontEnd se encuentra un nivel ARRIBA de /Backend
-   Backend/
-     ├─ routes/
-     └─ server.js
-   FrontEnd/
-     ├─ index.html
-     └─ ...
-*/
 const FRONT_PATH = path.join(__dirname, '..', 'FrontEnd');
+const EVIDENCIAS_DIR = path.join(FRONT_PATH, 'evidencias');
 
 app.use(express.static(FRONT_PATH));                         // html, css, js
 app.use('/uploads', express.static(path.join(__dirname, 'utils', 'uploads')));
@@ -52,8 +46,8 @@ app.use('/api/biomos', biomosRoutes);
 app.use('/api/super', superRoutes);
 app.use('/api/reportes', reportesRoutes);
 app.use('/imagesBiomos', express.static(path.join(FRONT_PATH, 'imagesBiomos')));
-
-
+app.use('/evidencias', express.static(EVIDENCIAS_DIR));
+app.use('/api/convocatorias', convocatoriasRoutes);
 
 /* ───────── páginas de recuperar contraseña ───────── */
 app.get('/recuperarContraseña/cambiar-contraseña.html', (_, res) =>

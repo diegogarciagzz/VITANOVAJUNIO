@@ -1,0 +1,133 @@
+<!-- Ubicación: /FrontEnd/Convocatorias/anteproyecto.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mawi – Explorador de Anteproyectos</title>
+  <!-- Tailwind & Feather Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    body{background:#353535;color:#fff;font-family:Inter,system-ui,sans-serif}
+    .sidebar-label{transition:opacity .2s}
+    #sidebar.collapsed .sidebar-label{opacity:0;pointer-events:none}
+    .tab-active{border-bottom:3px solid #34d399;color:#34d399}
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- ▸ NAVBAR -->
+  <header class="bg-gray-800 flex items-center justify-between h-14 px-6 shadow-md z-10">
+    <div class="flex items-center gap-2 text-white font-semibold text-lg">
+      <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/><circle cx="12" cy="12" r="2.5"/></svg>
+      Mawi
+    </div>
+    <div id="profileBtn" class="flex items-center gap-2 cursor-pointer hover:opacity-80">
+      <span id="userName" class="text-sm">Usuario</span>
+      <img id="avatar" src="/Assets/avatar-placeholder.png" class="w-8 h-8 rounded-full object-cover border-2 border-gray-700" />
+    </div>
+  </header>
+
+  <div class="flex flex-grow overflow-hidden">
+    <!-- ▸ SIDEBAR -->
+    <aside id="sidebar" class="bg-gray-900 w-64 flex flex-col transition-all duration-200">
+      <button id="toggleSide" class="self-end mt-3 mr-2 p-1 rounded hover:bg-gray-700"><i data-feather="chevron-left" class="w-4 h-4 text-gray-300"></i></button>
+      <nav class="flex flex-col gap-6 mt-6 px-6 text-sm">
+        <a href="/dashboard.html" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="home" class="w-4 h-4"></i><span class="sidebar-label">Inicio</span></a>
+        <a href="/Asistentes/Biomo/biomo.html" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="activity" class="w-4 h-4"></i><span class="sidebar-label">Mis Biomos</span></a>
+        <a href="/Asistentes/Convocatorias/convocatorias.html" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="file-text" class="w-4 h-4"></i><span class="sidebar-label">Nuevas Convocatorias</span></a>
+        <a href="/Convocatorias/anteproyecto.html" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="layers" class="w-4 h-4"></i><span class="sidebar-label">Explorador Anteproyectos</span></a>
+        <a href="/FrontEnd/Asistentes/Convocatorias/chat.html" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="message-circle" class="w-4 h-4"></i><span class="sidebar-label">Chatbot</span></a>
+      </nav>
+      <button id="logoutBtn" class="flex items-center gap-3 hover:text-red-400 py-2 px-6 mt-6"><i data-feather="log-out" class="w-4 h-4"></i><span class="sidebar-label">Cerrar sesión</span></button>
+      <button id="supportBtn" class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500"><i data-feather="phone" class="w-4 h-4 text-green-500"></i><span class="text-sm sidebar-label">Soporte</span></button>
+    </aside>
+
+    <!-- ▸ CONTENIDO -->
+    <main class="flex-1 overflow-y-auto p-8">
+      <h1 class="text-2xl font-semibold mb-6">Asistente Explorador de Anteproyectos</h1>
+
+      <!-- Buscador & Crear -->
+      <form id="searchForm" class="flex flex-wrap gap-4 items-center mb-6">
+        <div class="relative flex-1 min-w-[220px]">
+          <input id="searchInput" type="text" placeholder="Nombre de la Convocatoria" class="pl-10 pr-4 py-2 rounded-lg bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 w-full" />
+          <i data-feather="search" class="w-4 h-4 absolute left-3 top-3 text-gray-400"></i>
+        </div>
+        <button id="crearBtn" type="button" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg text-sm">Crear Nuevo Anteproyecto</button>
+      </form>
+
+      <!-- Tabs -->
+      <div class="flex gap-8 border-b border-gray-600 mb-4 text-sm">
+        <button data-tab="abiertos" class="tab tab-active pb-2">Abiertos</button>
+        <button data-tab="cerrados" class="tab pb-2 text-gray-300">Cerrados</button>
+      </div>
+
+      <!-- Lista -->
+      <div id="listaAnteproyectos" class="flex flex-col gap-4"></div>
+    </main>
+  </div>
+
+<script>
+feather.replace();
+/* Sidebar toggle */
+const sidebar=document.getElementById('sidebar');
+const toggleBtn=document.getElementById('toggleSide');
+if(toggleBtn){toggleBtn.onclick=()=>{sidebar.classList.toggle('w-64');sidebar.classList.toggle('w-16');sidebar.classList.toggle('collapsed');const icon=toggleBtn.querySelector('svg');icon.setAttribute('data-feather',sidebar.classList.contains('collapsed')?'chevron-right':'chevron-left');feather.replace();};}
+/* Session data */
+const user=JSON.parse(localStorage.getItem('user')||'{}');
+const token=localStorage.getItem('token');
+if(!user.id_usuario||!token){document.body.innerHTML='<h1 class="text-center mt-20 text-3xl">Mawi</h1><p class="text-center text-gray-400">Inicia sesión.</p>';throw new Error('No auth');}
+/* Navbar avatar */
+document.getElementById('userName').textContent=user.nombre;
+const foto=localStorage.getItem('foto_perfil')||'';document.getElementById('avatar').src=foto.startsWith('/')?foto:'/'+foto;
+/* Buttons */
+document.getElementById('logoutBtn').onclick=()=>{sessionStorage.clear();localStorage.clear();location.href='/index.html';};
+document.getElementById('profileBtn').onclick=()=>location.href='/Perfil/perfil.html';
+document.getElementById('supportBtn').onclick=()=>location.href='mailto:soporte@mawi.com';
+/* Tabs */
+let estadoActual='abiertos';
+const tabs=document.querySelectorAll('.tab');
+tabs.forEach(t=>t.onclick=()=>{estadoActual=t.dataset.tab;tabs.forEach(b=>b.classList.toggle('tab-active',b===t));tabs.forEach(b=>b.classList.toggle('text-gray-300',b!==t));cargarLista();});
+/* API */
+let cache=[];
+async function fetchAnteproyectos(){
+  const r=await fetch('/api/anteproyectos',{headers:{Authorization:`Bearer ${token}`}});
+  cache=await r.json();
+  cargarLista();
+}
+/* Render */
+function cardHtml(a){
+  const limite=a.fecha_limite? new Date(a.fecha_limite).toLocaleDateString():"—";
+  const creacion=new Date(a.fecha_creacion).toLocaleDateString();
+  return `<div class="bg-gray-700/50 rounded-xl p-4 flex justify-between items-center shadow-md">
+      <div>
+        <h3 class="text-lg font-semibold">${a.titulo}</h3>
+        <p class="text-gray-300 text-sm mb-2 max-w-md">${a.descripcion||'Sin descripción'}</p>
+        <div class="text-xs text-gray-400 flex gap-6">
+          <span>Fecha de creación: ${creacion}</span>
+          <span>Fecha límite: ${limite}</span>
+        </div>
+      </div>
+      <button class="bg-green-600 hover:bg-green-700 p-3 rounded-full" title="Ver"><i data-feather="book-open" class="w-5 h-5 text-white"></i></button>
+    </div>`;
+}
+function cargarLista(){
+  const lista=document.getElementById('listaAnteproyectos');
+  const query=document.getElementById('searchInput').value.toLowerCase();
+  const filtrado=cache.filter(a=>{
+    const coincideEstado=estadoActual==='abiertos'?a.estado==='abierto':a.estado==='cerrado';
+    const coincideSearch=!query||a.titulo.toLowerCase().includes(query);
+    return coincideEstado&&coincideSearch;
+  });
+  lista.innerHTML=filtrado.length?filtrado.map(cardHtml).join(''):'<p class="text-gray-400">Sin anteproyectos.</p>';
+  feather.replace();
+}
+/* Search */
+document.getElementById('searchInput').oninput=cargarLista;
+/* Crear nuevo */
+document.getElementById('crearBtn').onclick=()=>location.href='/Asistentes/Convocatorias/convocatorias.html';
+/* Init */
+fetchAnteproyectos();
+</script>
+</body>
+</html>

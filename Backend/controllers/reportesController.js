@@ -27,3 +27,22 @@ export const getReporteById = async (req, res) => {
     res.status(500).json({ error: 'Error al obtener el reporte' });
   }
 };
+
+export const saveEvidenciaPdf = async (req, res) => {
+  try {
+    const { id }   = req.params;   // id del reporte (viene en la URL)
+    const archivo  = req.file.filename;    // nombre generado por Multer
+
+    // 1. Actualiza el campo evidencias en la fila del reporte
+    await db.query(
+      'UPDATE reportes SET evidencias = ? WHERE id_reporte = ?',
+      [archivo, id]
+    );
+
+    // 2. Devuelve al front el nombre para que pueda hacer el preview
+    res.json({ ok: true, file: archivo });
+  } catch (err) {
+    console.error('❌ saveEvidenciaPdf:', err);
+    res.status(500).json({ ok: false, msg: 'Error al guardar la evidencia' });
+  }
+};

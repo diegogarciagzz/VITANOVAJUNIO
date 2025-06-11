@@ -36,7 +36,7 @@
         <a href="/FrontEnd/Asistentes/Biomo/biomo.html" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="activity" class="w-4 h-4"></i><span class="sidebar-label">Mis Biomos</span></a>
         <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="file-text" class="w-4 h-4"></i><span class="sidebar-label">Nuevas Convocatorias</span></a>
         <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="layers" class="w-4 h-4"></i><span class="sidebar-label">Explorador Anteproyectos</span></a>
-        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="message-circle" class="w-4 h-4"></i><span class="sidebar-label">Chatbot</span></a>
+        <a href="/FrontEnd/Asistentes/Convocatorias/chat.html" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="message-circle" class="w-4 h-4"></i><span class="sidebar-label">Chatbot</span></a>
         <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2"><i data-feather="play-circle" class="w-4 h-4"></i><span class="sidebar-label">Videojuego</span></a>
       </nav>
       <button id="logoutBtn" class="flex items-center gap-3 hover:text-red-400 py-2 px-6 mt-6"><i data-feather="log-out" class="w-4 h-4"></i><span class="sidebar-label">Cerrar sesión</span></button>
@@ -61,6 +61,14 @@
           <option value="fauna_transecto">Fauna Transecto</option>
           <option value="fauna_punto_conteo">Fauna Punto Conteo</option>
           <option value="variables_climaticas">Variables Climáticas</option>
+        </select>
+
+           <!-- Filtro de fecha -->
+        <select id="dateSelect" class="bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm">
+          <option value="all">Todas las fechas</option>
+          <option value="15">Últimos 15 días</option>
+          <option value="30">Último mes</option>
+          <option value="90">Últimos 3 meses</option>
         </select>
       </div>
 
