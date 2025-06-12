@@ -7,9 +7,12 @@
   <link rel="stylesheet" href="/Estilos/soporte.css" />
 </head>
 <body>
-    <div class="container">
-    <div class="close-button" onclick="window.parent.cerrarSoporte()">✖</div>
-     <div class="soporte-card">
+
+  <div class="container">
+    <!-- Botón para cerrar -->
+    <div class="close-button" onclick="window.parent.document.getElementById('supportIframe').style.display = 'none'">✖</div>
+
+    <div class="soporte-card">
       <div class="formulario">
         <label for="nombre">Nombre</label>
         <input type="text" id="nombre" placeholder="Escribe...">
@@ -36,5 +39,6 @@
       </div>
     </div>
   </div>
+
 </body>
 </html>

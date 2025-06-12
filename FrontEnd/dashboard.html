@@ -145,7 +145,14 @@
           href="/Asistentes\Convocatorias\anteproyectos.html"
           class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="layers" class="w-4 h-4"></i>
-          <span class="sidebar-label">Explorador Anteproyectos</span>
+          <span class="sidebar-label">Explorador Convocatorias</span>
+        </a>
+
+         <a
+          href="/Asistentes\Convocatorias\NuevoAnteproyecto.html"
+          class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="layers" class="w-4 h-4"></i>
+          <span class="sidebar-label"> Anteproyectos </span>
         </a>
 
         <a
@@ -179,6 +186,7 @@
         <span class="text-sm sidebar-label">Soporte</span>
       </button>
     </aside>
+<iframe id="supportIframe" src="/Soporte\soporte.html" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 60%; border: none; background-color: #202020; color: white; padding: 20px; border-radius: 40px 40px 0 0;" ></iframe>
 
     <!-- ▸ CONTENIDO -------------------------------------------------- -->
     <main class="flex-1 overflow-y-auto p-8 flex flex-col items-center">
@@ -205,10 +213,7 @@
 </a>
       </div>
 
-      <button class="btn-soporte" id="centerSupport">
-        <img src="/Assets/IconoTelefono2.png" alt="Soporte" />
-        Contacta con el soporte
-      </button>
+    
     </main>
   </div>
 
@@ -258,6 +263,7 @@ if (fotoRuta) {
       });
     }
 
+
     // 6) Redirigir a “Perfil” si hacen clic en #profileBtn
     const btnProfile = document.getElementById('profileBtn');
     if (btnProfile) {
@@ -265,6 +271,10 @@ if (fotoRuta) {
         location.href = '/Perfil/perfil.html';
       });
     }
+    // Mostrar el iframe de soporte
+  document.getElementById('supportBtn').onclick = function() {
+    document.getElementById('supportIframe').style.display = 'block';
+  };
   </script>
 </body>
 </html>

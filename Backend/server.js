@@ -35,6 +35,7 @@ const EVIDENCIAS_DIR = path.join(FRONT_PATH, 'evidencias');
 
 app.use(express.static(FRONT_PATH));                         // html, css, js
 app.use('/uploads', express.static(path.join(__dirname, 'utils', 'uploads')));
+app.use('/imagesBiomos', express.static(path.join(__dirname, 'FrontEnd', 'imagesBiomos')));
 
 /* ───────── middleware global ───────── */
 app.use(cors());

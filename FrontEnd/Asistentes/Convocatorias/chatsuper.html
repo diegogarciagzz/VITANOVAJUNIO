@@ -3,101 +3,89 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mawi – Chatbot</title>
+  <title>Mawi – Chatbot Super-Admin</title>
 
   <!-- Tailwind + Feather -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
 
   <style>
-    body{background:#353535;color:#fff;font-family:Inter,system-ui,sans-serif;}
     #sidebar.collapsed .sidebar-label{opacity:0;pointer-events:none;transition:opacity .2s;}
     .sidebar-label{transition:opacity .2s;}
     .rotate-180{transform:rotate(180deg);}
   </style>
 </head>
-<body class="min-h-screen flex flex-col" style="background:#353535;">
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
 
   <!-- NAVBAR -->
   <header class="bg-gray-800 flex items-center justify-between h-14 px-6">
     <div class="flex items-center gap-2">
-      <svg class="w-5 h-5 fill-current text-white" viewBox="0 0 24 24">
+      <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
         <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/>
         <circle cx="12" cy="12" r="2.5"/>
       </svg>
-      <span class="font-semibold text-lg text-white">Mawi</span>
+      <span class="font-semibold text-lg">Mawi</span>
     </div>
     <div id="profileBtn" class="flex items-center gap-2 cursor-pointer hover:opacity-80">
-      <span id="userName" class="text-sm text-white">Usuario</span>
-      <img id="avatar" src="/Assets/avatar-placeholder.png" alt="avatar"
+      <span id="userName" class="text-sm">Usuario</span>
+      <img id="avatar" src="/Assets/avatar-placeholder.png"
            class="w-8 h-8 rounded-full object-cover border-2 border-gray-700"/>
     </div>
   </header>
 
   <div class="flex flex-grow overflow-hidden">
+
     <!-- SIDEBAR -->
     <aside id="sidebar" class="bg-gray-900 w-64 flex flex-col transition-all duration-200">
       <button id="toggleSide" class="self-end mt-3 mr-2 p-1 rounded hover:bg-gray-700">
-        <i data-feather="chevron-left" class="w-4 h-4 text-gray-300"></i>
+        <i data-feather="chevron-left" class="w-4 h-4"></i>
       </button>
 
-      <nav class="flex flex-col gap-6 mt-6 px-6 text-sm">
-        <a href="/dashboard.html" class="flex items-center gap-3 hover:text-green-400 py-2">
+      <nav class="flex flex-col gap-4 mt-6 px-6 text-sm">
+        <a href="/super-Admin.html" class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="home" class="w-4 h-4"></i>
           <span class="sidebar-label">Inicio</span>
         </a>
-
-        <a href="/Asistentes/Biomo/biomo.html" class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="activity" class="w-4 h-4"></i>
-          <span class="sidebar-label">Mis Biomos</span>
+        <a href="/Asistentes/Biomo/biomoSuperadmin.html" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="bar-chart-2" class="w-4 h-4"></i>
+          <span class="sidebar-label">Número de Biomos</span>
         </a>
-
-        <a href="/Asistentes/Convocatorias/convocatorias.html" class="flex items-center gap-3 hover:text-green-400 py-2">
+        <a href="/Views/super/users.html" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="user-check" class="w-4 h-4"></i>
+          <span class="sidebar-label">Gestión de Usuarios</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="file-text" class="w-4 h-4"></i>
-          <span class="sidebar-label">Nuevas Convocatorias</span>
+          <span class="sidebar-label">Número de Anteproyectos</span>
         </a>
-
-        <a href="/Asistentes/Convocatorias/anteproyectos.html" class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="layers" class="w-4 h-4"></i>
-          <span class="sidebar-label">Explorador Convocatorias</span>
-        </a>
-<a
-          href="/Asistentes\Convocatorias\NuevoAnteproyecto.html"
-          class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="layers" class="w-4 h-4"></i>
-          <span class="sidebar-label"> Anteproyectos </span>
-        </a>
-
-        <a href="/Asistentes/Convocatorias/chat.html" class="flex items-center gap-3 hover:text-green-400 py-2 text-green-400">
+        <a href="/Asistentes/Convocatorias/chatsuper.html" class="flex items-center gap-3 hover:text-green-400 py-2 text-green-400">
           <i data-feather="message-circle" class="w-4 h-4"></i>
           <span class="sidebar-label">Chatbot</span>
         </a>
-
-        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="play-circle" class="w-4 h-4"></i>
-          <span class="sidebar-label">Videojuego</span>
+        <a href="/Views/super/pending.html" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="clock" class="w-4 h-4"></i>
+          <span class="sidebar-label">Solicitudes Pendientes</span>
         </a>
+        <button id="logoutBtn"
+                class="flex items-center gap-3 hover:text-red-400 py-2 mt-4">
+          <i data-feather="log-out" class="w-4 h-4"></i>
+          <span class="sidebar-label">Cerrar sesión</span>
+        </button>
       </nav>
 
-      <button id="logoutBtn" class="flex items-center gap-3 hover:text-red-400 py-2 px-6 mt-6">
-        <i data-feather="log-out" class="w-4 h-4"></i>
-        <span class="sidebar-label">Cerrar sesión</span>
-      </button>
-
-      <button id="supportBtn" class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500">
+      <button id="supportBtn"
+              class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500">
         <i data-feather="phone" class="w-4 h-4 text-green-500"></i>
-        <span class="text-sm sidebar-label">Soporte</span>
+        <span class="text-sm sidebar-label">Contacta con el soporte</span>
       </button>
     </aside>
 
     <!-- CONTENIDO -->
     <main class="flex-1 overflow-y-auto p-8">
-      <h1 class="text-2xl font-semibold mb-6 text-white">Chatbot AWAQ – Asistente Virtual</h1>
+      <h1 class="text-2xl font-semibold mb-6">Chatbot AWAQ – Super Admin</h1>
 
       <div class="max-w-4xl mx-auto">
-        <div id="chatbot" class="text-white p-6 rounded-xl shadow-lg border" 
-             style="background:#2e2e2e; border-color:#4a4a4a;">
-          
+        <div id="chatbot" class="bg-gray-800 text-white p-6 rounded-xl shadow-lg border border-gray-700">
           <div class="flex items-center justify-center mb-6">
             <img src="https://em-content.zobj.net/source/twitter/376/turtle_1f422.png" 
                  alt="AWAQ Assistant" class="w-16 h-16 mr-4">
@@ -108,12 +96,11 @@
           </div>
           
           <div id="chatWindow" 
-               class="h-[500px] overflow-y-auto p-4 rounded-lg mb-4 border text-base space-y-3 scrollbar-thin scrollbar-thumb-gray-600"
-               style="background:#1a1a1a; border-color:#4a4a4a;">
+               class="bg-gray-900 h-[500px] overflow-y-auto p-4 rounded-lg mb-4 border border-gray-600 text-base space-y-3 scrollbar-thin scrollbar-thumb-gray-600">
             <div class="flex items-start gap-3">
               <img src="https://em-content.zobj.net/source/twitter/376/turtle_1f422.png" 
                    alt="bot" class="w-8 h-8 flex-shrink-0 mt-1">
-              <div class="p-3 rounded-lg rounded-tl-none max-w-xs" style="background:#2a2a2a;">
+              <div class="bg-gray-700 p-3 rounded-lg rounded-tl-none max-w-xs">
                 <strong>AWAQ Assistant:</strong> ¡Hola! Soy tu asistente virtual especializado en temas ambientales. ¿En qué puedo ayudarte hoy?
               </div>
             </div>
@@ -123,8 +110,7 @@
             <input id="chatInput" 
                    type="text" 
                    placeholder="Escribe tu pregunta sobre medio ambiente, biodiversidad, proyectos..." 
-                   class="flex-grow p-3 rounded-lg border text-white placeholder-gray-400 text-base focus:outline-none focus:ring-2 focus:ring-green-500"
-                   style="background:#3a3a3a; border-color:#555;"/>
+                   class="flex-grow p-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 text-base focus:outline-none focus:ring-2 focus:ring-green-500"/>
             <button id="sendBtn" 
                     class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg text-base font-medium transition-colors duration-200 flex items-center gap-2">
               <i data-feather="send" class="w-4 h-4"></i>
@@ -149,31 +135,36 @@ toggleSide.onclick = function () {
   this.querySelector('svg')?.classList.toggle('rotate-180');
 };
 
-/* 2. Navegación */
+/* 2. Perfil y soporte */
 const profileBtn = document.getElementById('profileBtn');
 const supportBtn = document.getElementById('supportBtn');
-const logoutBtn = document.getElementById('logoutBtn');
+profileBtn.addEventListener('click', () =>
+  location.href = '/Perfil/perfilSuper.html'
+);
+supportBtn.addEventListener('click', () =>
+  location.href = 'mailto:soporte@mawi.com'
+);
 
-profileBtn.onclick = () => location.href = '/Perfil/perfil.html';
-supportBtn.onclick = () => location.href = 'mailto:soporte@mawi.com';
-logoutBtn.onclick = () => { 
-  sessionStorage.clear(); 
-  localStorage.clear(); 
-  location.href = '/index.html'; 
-};
+/* 3. Logout */
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  sessionStorage.clear();
+  localStorage.removeItem('user');
+  localStorage.removeItem('token');
+  localStorage.removeItem('foto_perfil');
+  location.href = '/index.html';
+});
 
-/* 3. Usuario */
+/* 4. Nombre y avatar */
 const userData = JSON.parse(localStorage.getItem('user') || '{}');
 if (userData?.nombre) document.getElementById('userName').textContent = userData.nombre;
-
-const avatarURL = localStorage.getItem('foto_perfil');
-if (avatarURL && avatarURL !== 'null') {
-  const avatar = document.getElementById('avatar');
-  avatar.src = avatarURL.startsWith('/') ? avatarURL : '/' + avatarURL;
-  avatar.onerror = () => avatar.src = '/Assets/avatar-placeholder.png';
+const avatarUrl = localStorage.getItem('foto_perfil');
+if (avatarUrl && avatarUrl !== 'null') {
+  document.getElementById('avatar').src = avatarUrl;
+  document.getElementById('avatar').onerror = () => 
+    document.getElementById('avatar').src = '/Assets/avatar-placeholder.png';
 }
 
-/* 4. Chatbot */
+/* 5. Chatbot */
 const chatWindow = document.getElementById('chatWindow');
 const chatInput = document.getElementById('chatInput');
 
@@ -200,7 +191,7 @@ async function enviarMensaje() {
     <div id="${typingId}" class="flex items-start gap-3">
       <img src="https://em-content.zobj.net/source/twitter/376/turtle_1f422.png" 
            alt="bot" class="w-8 h-8 flex-shrink-0 mt-1">
-      <div class="p-3 rounded-lg rounded-tl-none" style="background:#2a2a2a;">
+      <div class="bg-gray-700 p-3 rounded-lg rounded-tl-none">
         <span class="animate-pulse">AWAQ está escribiendo...</span>
       </div>
     </div>`);
@@ -229,7 +220,7 @@ async function enviarMensaje() {
       <div class="flex items-start gap-3">
         <img src="https://em-content.zobj.net/source/twitter/376/turtle_1f422.png" 
              alt="bot" class="w-8 h-8 flex-shrink-0 mt-1">
-        <div class="p-3 rounded-lg rounded-tl-none max-w-lg" style="background:#2a2a2a;">
+        <div class="bg-gray-700 p-3 rounded-lg rounded-tl-none max-w-lg">
           <strong>AWAQ Assistant:</strong> ${reply}
         </div>
       </div>`);
