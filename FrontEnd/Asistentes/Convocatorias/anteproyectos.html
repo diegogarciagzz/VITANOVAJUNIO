@@ -137,64 +137,113 @@
 
 <script>
 feather.replace();
-/* Sidebar toggle */
-const sidebar=document.getElementById('sidebar');
-const toggleBtn=document.getElementById('toggleSide');
-if(toggleBtn){toggleBtn.onclick=()=>{sidebar.classList.toggle('w-64');sidebar.classList.toggle('w-16');sidebar.classList.toggle('collapsed');const icon=toggleBtn.querySelector('svg');icon.setAttribute('data-feather',sidebar.classList.contains('collapsed')?'chevron-right':'chevron-left');feather.replace();};}
-/* Session data */
-const user=JSON.parse(localStorage.getItem('user')||'{}');
-const token=localStorage.getItem('token');
-if(!user.id_usuario||!token){document.body.innerHTML='<h1 class="text-center mt-20 text-3xl">Mawi</h1><p class="text-center text-gray-400">Inicia sesión.</p>';throw new Error('No auth');}
-/* Navbar avatar */
-document.getElementById('userName').textContent=user.nombre;
-const foto=localStorage.getItem('foto_perfil')||'';document.getElementById('avatar').src=foto.startsWith('/')?foto:'/'+foto;
-/* Buttons */
-document.getElementById('logoutBtn').onclick=()=>{sessionStorage.clear();localStorage.clear();location.href='/index.html';};
-document.getElementById('profileBtn').onclick=()=>location.href='/Perfil/perfil.html';
-document.getElementById('supportBtn').onclick=()=>location.href='mailto:soporte@mawi.com';
-/* Tabs */
-let estadoActual='abiertos';
-const tabs=document.querySelectorAll('.tab');
-tabs.forEach(t=>t.onclick=()=>{estadoActual=t.dataset.tab;tabs.forEach(b=>b.classList.toggle('tab-active',b===t));tabs.forEach(b=>b.classList.toggle('text-gray-300',b!==t));cargarLista();});
-/* API */
-let cache=[];
-async function fetchAnteproyectos(){
-  const r=await fetch('/api/anteproyectos',{headers:{Authorization:`Bearer ${token}`}});
-  cache=await r.json();
-  cargarLista();
+
+// Sidebar toggle
+const sidebar = document.getElementById('sidebar');
+const toggleBtn = document.getElementById('toggleSide');
+if (toggleBtn) {
+  toggleBtn.onclick = () => {
+    sidebar.classList.toggle('w-64');
+    sidebar.classList.toggle('w-16');
+    sidebar.classList.toggle('collapsed');
+    const icon = toggleBtn.querySelector('svg');
+    icon.setAttribute('data-feather', sidebar.classList.contains('collapsed') ? 'chevron-right' : 'chevron-left');
+    feather.replace();
+  };
 }
-/* Render */
-function cardHtml(a){
-  const limite=a.fecha_limite? new Date(a.fecha_limite).toLocaleDateString():"—";
-  const creacion=new Date(a.fecha_creacion).toLocaleDateString();
-  return `<div class="bg-gray-700/50 rounded-xl p-4 flex justify-between items-center shadow-md">
+
+// Session & Avatar
+const user = JSON.parse(localStorage.getItem('user') || '{}');
+const token = localStorage.getItem('token');
+if (!user.id_usuario || !token) {
+  document.body.innerHTML = '<h1 class="text-center mt-20 text-3xl">Mawi</h1><p class="text-center text-gray-400">Inicia sesión.</p>';
+  throw new Error('No auth');
+}
+document.getElementById('userName').textContent = user.nombre;
+const foto = localStorage.getItem('foto_perfil') || '';
+document.getElementById('avatar').src = foto.startsWith('/') ? foto : '/' + foto;
+
+// Botones
+
+document.getElementById('logoutBtn').onclick = () => {
+  sessionStorage.clear();
+  localStorage.clear();
+  location.href = '/index.html';
+};
+document.getElementById('profileBtn').onclick = () => location.href = '/Perfil/perfil.html';
+document.getElementById('supportBtn').onclick = () => location.href = 'mailto:soporte@mawi.com';
+
+// Tabs
+let estadoActual = 'abiertos';
+const tabs = document.querySelectorAll('.tab');
+tabs.forEach(t => t.onclick = () => {
+  estadoActual = t.dataset.tab;
+  tabs.forEach(b => b.classList.toggle('tab-active', b === t));
+  tabs.forEach(b => b.classList.toggle('text-gray-300', b !== t));
+  cargarLista();
+});
+
+// API: Corrección de endpoint
+let cache = [];async function fetchAnteproyectos() {
+  try {
+    const r = await fetch('/api/anteproyectos', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (!r.ok) {
+      throw new Error(`HTTP ${r.status}`);
+    }
+
+    cache = await r.json();
+    cargarLista();
+  } catch (err) {
+    console.error('[Error fetchAnteproyectos]', err);
+    document.getElementById('listaAnteproyectos').innerHTML = '<p class="text-red-500">No se pudo cargar la lista.</p>';
+  }
+}
+
+// Render de cards
+function cardHtml(a) {
+  const limite = a.fecha_cierre ? new Date(a.fecha_cierre).toLocaleDateString() : "—";
+  const creacion = new Date(a.fecha_creacion).toLocaleDateString();
+  return `<div class="bg-gray-700/50 rounded-xl p-4 flex justify-between items-center shadow-md cursor-pointer" onclick="verDetalle(${a.id_proyecto})">
       <div>
         <h3 class="text-lg font-semibold">${a.titulo}</h3>
-        <p class="text-gray-300 text-sm mb-2 max-w-md">${a.descripcion||'Sin descripción'}</p>
+        <p class="text-gray-300 text-sm mb-2 max-w-md">${a.descripcion || 'Sin descripción'}</p>
         <div class="text-xs text-gray-400 flex gap-6">
           <span>Fecha de creación: ${creacion}</span>
           <span>Fecha límite: ${limite}</span>
         </div>
       </div>
-      <button class="bg-green-600 hover:bg-green-700 p-3 rounded-full" title="Ver"><i data-feather="book-open" class="w-5 h-5 text-white"></i></button>
+     <a href="/pdfs/${a.archivo_pdf}" download title="Descargar PDF" class="bg-green-500 hover:bg-green-600 p-2 rounded-full">
+  <i data-feather="download" class="w-4 h-4 text-white"></i>
+</a>
     </div>`;
 }
-function cargarLista(){
-  const lista=document.getElementById('listaAnteproyectos');
-  const query=document.getElementById('searchInput').value.toLowerCase();
-  const filtrado=cache.filter(a=>{
-    const coincideEstado=estadoActual==='abiertos'?a.estado==='abierto':a.estado==='cerrado';
-    const coincideSearch=!query||a.titulo.toLowerCase().includes(query);
-    return coincideEstado&&coincideSearch;
+
+// Cargar cards
+function cargarLista() {
+  const lista = document.getElementById('listaAnteproyectos');
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const filtrado = cache.filter(a => {
+    const coincideEstado = estadoActual === 'abiertos' ? a.estado.toLowerCase() === 'abierto' : a.estado.toLowerCase() === 'cerrado';
+    const coincideSearch = !query || a.titulo.toLowerCase().includes(query);
+    return coincideEstado && coincideSearch;
   });
-  lista.innerHTML=filtrado.length?filtrado.map(cardHtml).join(''):'<p class="text-gray-400">Sin anteproyectos.</p>';
+  lista.innerHTML = filtrado.length ? filtrado.map(cardHtml).join('') : '<p class="text-gray-400">Sin anteproyectos.</p>';
   feather.replace();
 }
-/* Search */
-document.getElementById('searchInput').oninput=cargarLista;
-/* Crear nuevo */
-document.getElementById('crearBtn').onclick=()=>location.href='/Asistentes/Convocatorias/convocatorias.html';
-/* Init */
+
+// Vista detalle
+
+function verDetalle(id) {
+location.href = `/Asistentes/Convocatorias/detalle-convocatoria.html?id=${id}`;
+}
+
+// Filtros y carga inicial
+
+document.getElementById('searchInput').oninput = cargarLista;
+document.getElementById('crearBtn').onclick = () => location.href = '/Asistentes/Convocatorias/convocatorias.html';
 fetchAnteproyectos();
 </script>
 </body>

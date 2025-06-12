@@ -215,17 +215,16 @@ const form = document.getElementById('convocatoriaForm');
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  // 1. Convertir FormData → objeto plano
-  const body = Object.fromEntries(new FormData(form));
+  // CORRECTO: enviar FormData directamente
+  const formData = new FormData(form);
 
   try {
     const res = await fetch('/api/convocatorias', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}` // NO poner Content-Type
       },
-      body: JSON.stringify(body)
+      body: formData
     });
 
     const out = await res.json();
@@ -233,13 +232,13 @@ form.addEventListener('submit', async (e) => {
 
     alert('Convocatoria creada ✅');
     form.reset();
-    // Si quieres redirigir al explorador:
-    // location.href = '/Convocatorias/anteproyecto.html';
+    // location.href = '/Convocatorias/anteproyecto.html'; // opcional
   } catch (err) {
     console.error(err);
     alert('No se pudo crear la convocatoria');
   }
 });
+
 </script>
 </body>
 </html>

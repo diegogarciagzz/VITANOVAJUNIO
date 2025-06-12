@@ -9,14 +9,17 @@ import { fileURLToPath } from 'url';
 import fetch from 'node-fetch';
 import fs from 'fs';
 
+
 import faunaRoutes  from './routes/fauna.js';
 import authRoutes   from './routes/auth.js';
+import authMiddleware from './middlewares/auth1.js';
 import adminRoutes  from './routes/admin.js';
 import usersRoutes  from './routes/users.js';
 import superRoutes  from './routes/superAdmin.js';
 import biomosRoutes from './routes/biomos.js';
 import reportesRoutes from './routes/reportes.js';
 import convocatoriasRoutes from './routes/convocatorias.js';
+import anteproyectosRoutes from './routes/anteproyectos.js';
 
 
 dotenv.config();
@@ -48,6 +51,11 @@ app.use('/api/reportes', reportesRoutes);
 app.use('/imagesBiomos', express.static(path.join(FRONT_PATH, 'imagesBiomos')));
 app.use('/evidencias', express.static(EVIDENCIAS_DIR));
 app.use('/api/convocatorias', convocatoriasRoutes);
+app.use('/api/anteproyectos', anteproyectosRoutes);
+app.use('/pdfs', express.static(path.join(__dirname, 'Convocatorias_PDF')));
+app.use('/pdfs', express.static(path.join(process.cwd(), 'Convocatorias_PDF')));
+
+
 
 /* ───────── páginas de recuperar contraseña ───────── */
 app.get('/recuperarContraseña/cambiar-contraseña.html', (_, res) =>
@@ -82,6 +90,12 @@ app.get('/FrontEnd/Asistentes/Biomo/reporte.html', (req, res) => {
 app.get('/FrontEnd/Asistentes/Convocatorias/chat.html', (req, res) => {
   res.sendFile(path.join(FRONT_PATH, 'Asistentes', 'Convocatorias', 'chat.html'));
 });
+
+app.get('/Asistentes/Convocatorias/detalle-convocatoria.html', (_, res) => {
+  res.sendFile(path.join(FRONT_PATH, 'Asistentes', 'Convocatorias', 'detalle-convocatoria.html'));
+});
+
+
 app.post('/api/chat', async (req, res) => {
   const { messages } = req.body;
   try {
