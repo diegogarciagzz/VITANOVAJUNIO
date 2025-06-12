@@ -10,7 +10,10 @@
   <script src="https://unpkg.com/feather-icons"></script>
 
   <style>
-    .collapsed .sidebar-label{opacity:0;pointer-events:none}
+    .collapsed .sidebar-label {
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col">
@@ -26,77 +29,55 @@
     </div>
     <div id="profileBtn" class="flex items-center gap-2 cursor-pointer hover:opacity-80">
       <span id="userName" class="text-sm">Usuario</span>
-      <img id="avatar" src="../assets/avatar-placeholder.png"
+      <img id="avatar" src="/Assets/avatar-placeholder.png"
            class="w-8 h-8 rounded-full object-cover border-2 border-gray-700"/>
     </div>
   </header>
 
   <div class="flex flex-grow overflow-hidden">
+
     <!-- SIDEBAR -->
-    <aside id="sidebar"
-           class="bg-gray-900 w-64 flex flex-col transition-all duration-200">
-      <button id="toggleSide"
-              class="self-end mt-3 mr-2 p-1 rounded hover:bg-gray-700">
+    <aside id="sidebar" class="bg-gray-900 w-64 flex flex-col transition-all duration-200">
+      <button id="toggleSide" class="self-end mt-3 mr-2 p-1 rounded hover:bg-gray-700">
         <i data-feather="chevron-left" class="w-4 h-4"></i>
       </button>
 
-      <!-- menú -->
       <nav class="flex flex-col gap-4 mt-6 px-6 text-sm">
-        <a href="#"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
+        <a href="/super-Admin.html" class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="home" class="w-4 h-4"></i>
           <span class="sidebar-label">Inicio</span>
         </a>
-        <a href="./Asistentes/Biomo/biomo.html"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="database" class="w-4 h-4"></i>
+        <a href="Asistentes/Biomo/biomoSuperadmin.html" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="bar-chart-2" class="w-4 h-4"></i>
           <span class="sidebar-label">Número de Biomos</span>
         </a>
-        <a href="#"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="users" class="w-4 h-4"></i>
+        <a href="/Views\usuarios.html" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="user-check" class="w-4 h-4"></i>
           <span class="sidebar-label">Número de EcoRangers</span>
         </a>
-        <a href="#"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
+        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="file-text" class="w-4 h-4"></i>
           <span class="sidebar-label">Número de Anteproyectos</span>
         </a>
-        <a href="#"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="link" class="w-4 h-4"></i>
-          <span class="sidebar-label">Conexión SFDC</span>
+        <a href="Asistentes\Convocatorias\chatsuper.html" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="message-circle" class="w-4 h-4"></i>
+          <span class="sidebar-label">Chatbot</span>
         </a>
-        <a href="#"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="bar-chart-2" class="w-4 h-4"></i>
-          <span class="sidebar-label">Informes, Métricas</span>
-        </a>
-        <a href="#"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="user-plus" class="w-4 h-4"></i>
-          <span class="sidebar-label">Crear EcoRanger</span>
-        </a>
-        <a href="#"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="search" class="w-4 h-4"></i>
-          <span class="sidebar-label">View de EcoRanger</span>
-        </a>
-
-        <!-- enlaces superadmin -->
-        <a href="Views/super/users.html"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="shield" class="w-4 h-4"></i>
+        <a href="/Views/super/users.html" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="users" class="w-4 h-4"></i>
           <span class="sidebar-label">Gestión de Usuarios</span>
         </a>
-        <a href="Views/super/pending.html"
-           class="flex items-center gap-3 hover:text-green-400 py-2">
+        <a href="/Views/super/pending.html" class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="clock" class="w-4 h-4"></i>
           <span class="sidebar-label">Solicitudes Pendientes</span>
         </a>
+        <button id="logoutBtn"
+                class="flex items-center gap-3 hover:text-red-400 py-2 mt-4">
+          <i data-feather="log-out" class="w-4 h-4"></i>
+          <span class="sidebar-label">Cerrar sesión</span>
+        </button>
       </nav>
 
-      <!-- soporte -->
       <button id="supportBtn"
               class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500">
         <i data-feather="phone" class="w-4 h-4 text-green-500"></i>
@@ -106,31 +87,101 @@
 
     <!-- CONTENIDO -->
     <main class="flex-1 overflow-y-auto p-6">
-      <h1 class="text-2xl font-semibold">Dashboard Super-Admin</h1>
-      <p class="text-gray-300 mt-4">Contenido del super-admin…</p>
+      <h2 class="text-2xl font-semibold mb-4">Informes, Métricas y Análisis</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Tarjeta Biomos -->
+        <div class="bg-gray-800 p-4 rounded shadow">
+          <h3 class="text-lg font-semibold mb-1">Número de Biomos</h3>
+          <p class="text-gray-400 text-sm mb-2">Cantidad de biomos creados.</p>
+          <div class="text-center text-xl font-bold text-white mb-2" id="biomo-count">—</div>
+          <button id="btnBiomoReporte"
+                  class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-sm">
+            Ver Reporte
+          </button>
+        </div>
+
+        <!-- Tarjeta EcoRangers -->
+        <div class="bg-gray-800 p-4 rounded shadow">
+          <h3 class="text-lg font-semibold mb-1">Número de EcoRanger</h3>
+          <p class="text-gray-400 text-sm mb-2">Cantidad de usuarios que usan esta herramienta.</p>
+          <div class="text-center text-xl font-bold text-white mb-2" id="ecoranger-count">—</div>
+          <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-sm">Ver Reporte</button>
+        </div>
+
+        <!-- Tarjeta Anteproyectos -->
+        <div class="bg-gray-800 p-4 rounded shadow">
+          <h3 class="text-lg font-semibold mb-1">Número de Anteproyectos</h3>
+          <p class="text-gray-400 text-sm mb-2">Anteproyectos tanto abiertos como cerrados.</p>
+          <div class="text-center text-xl font-bold text-white mb-2" id="anteproyecto-count">—</div>
+          <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-sm">Ver Reporte</button>
+        </div>
+      </div>
+
     </main>
   </div>
 
+  <!-- SCRIPTS -->
   <script>
     feather.replace();
 
-    /* colapsar */
-    const sb = document.getElementById('sidebar');
-    document.getElementById('toggleSide').onclick = () =>{
-      sb.classList.toggle('w-64'); sb.classList.toggle('w-16');
-      sb.classList.toggle('collapsed');
-      this.querySelector?.('svg')?.classList.toggle('rotate-180');
+    /* 1. Sidebar */
+    const sidebar    = document.getElementById('sidebar');
+    const toggleSide = document.getElementById('toggleSide');
+    toggleSide.onclick = function () {
+      sidebar.classList.toggle('w-64');
+      sidebar.classList.toggle('w-16');
+      sidebar.classList.toggle('collapsed');
+      this.querySelector('svg')?.classList.toggle('rotate-180');
     };
 
-    /* datos usuario */
-    const user = JSON.parse(localStorage.getItem('user')||'{}');
-    if(user?.nombre) document.getElementById('userName').textContent = user.nombre;
-    const av = localStorage.getItem('foto_perfil');
-    if(av) document.getElementById('avatar').src = av;
+    /* 2. Perfil y soporte */
+    const profileBtn = document.getElementById('profileBtn');
+    const supportBtn = document.getElementById('supportBtn');
+    profileBtn.addEventListener('click', () =>
+      location.href = '../Perfil/perfilSuper.html'
+    );
+    supportBtn.addEventListener('click', () =>
+      location.href = 'mailto:soporte@mawi.com'
+    );
 
-    /* perfil/soporte */
-    profileBtn.onclick = ()=>location.href='../Perfil/perfil.html';
-    supportBtn.onclick = ()=>location.href='mailto:soporte@mawi.com';
+    /* 3. Logout */
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      sessionStorage.clear();
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      localStorage.removeItem('foto_perfil');
+      location.href = 'index.html';
+    });
+
+    /* 4. Nombre y avatar */
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    if (userData?.nombre) document.getElementById('userName').textContent = userData.nombre;
+    const avatarUrl = localStorage.getItem('foto_perfil');
+    if (avatarUrl) document.getElementById('avatar').src = avatarUrl;
+
+    /* 5. Métricas */
+    async function cargarMetricas() {
+      try {
+        // Sustituir por tu endpoint real:
+        const data = { biomos: 25, ecorangers: 14, anteproyectos: 38 };
+        // const response = await fetch('/api/admin/dashboard-metrics');
+        // const data     = await response.json();
+
+        document.getElementById('biomo-count').textContent        = data.biomos        ?? 0;
+        document.getElementById('ecoranger-count').textContent    = data.ecorangers    ?? 0;
+        document.getElementById('anteproyecto-count').textContent = data.anteproyectos ?? 0;
+      } catch (err) {
+        console.error('Error cargando métricas:', err);
+      }
+    }
+    cargarMetricas();
+
+    /* 6. Botón “Ver Reporte” de Biomos */
+    document.getElementById('btnBiomoReporte')
+            .addEventListener('click', () =>
+              location.href = 'Asistentes/Biomo/biomoSuperadmin.html'
+            );
   </script>
 </body>
 </html>

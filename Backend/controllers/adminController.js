@@ -1,5 +1,5 @@
 // controllers/adminController.js
-import { db } from '../db.js';
+import db from '../db.js'; // ✅ importación por defecto
 
 // ----------- usuarios pendientes ------------------
 export const getPendingUsers = async (_, res) => {
