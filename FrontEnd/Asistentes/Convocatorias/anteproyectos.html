@@ -132,8 +132,8 @@
 
       <!-- Tabs -->
       <div class="flex gap-8 border-b border-gray-600 mb-4 text-sm">
-        <button data-tab="abiertos" class="tab tab-active pb-2">Abiertos</button>
-        <button data-tab="cerrados" class="tab pb-2 text-gray-300">Cerrados</button>
+        <button data-tab="abiertos" class="tab tab-active pb-2">Activos</button>
+        <button data-tab="cerrados" class="tab pb-2 text-gray-300">Finalizados</button>
       </div>
 
       <!-- Lista -->
@@ -209,36 +209,127 @@ let cache = [];async function fetchAnteproyectos() {
 }
 
 // Render de cards
+// ✅ MEJORAR: Render de cards con iconos de estado
 function cardHtml(a) {
-  const limite = a.fecha_cierre ? new Date(a.fecha_cierre).toLocaleDateString() : "—";
-  const creacion = new Date(a.fecha_creacion).toLocaleDateString();
-  return `<div class="bg-gray-700/50 rounded-xl p-4 flex justify-between items-center shadow-md cursor-pointer" onclick="verDetalle(${a.id_proyecto})">
-      <div>
-        <h3 class="text-lg font-semibold">${a.titulo}</h3>
+  const fechaCierre = a.fecha_cierre ? new Date(a.fecha_cierre).toLocaleDateString() : "—";
+  const fechaCreacion = new Date(a.fecha_creacion).toLocaleDateString();
+  
+  // ✅ AGREGAR: Determinar estado basado en fechas
+  const hoy = new Date();
+  const fechaCierreObj = new Date(a.fecha_cierre);
+  const estaActivo = fechaCierreObj >= hoy;
+  
+  // ✅ AGREGAR: Iconos y colores para el estado
+  const estado = estaActivo ? 'Activo' : 'Finalizado';
+  const estadoColor = estaActivo ? 'text-green-400' : 'text-red-400';
+  const estadoBg = estaActivo ? 'bg-green-900/30' : 'bg-red-900/30';
+  const icono = estaActivo ? 'check-circle' : 'x-circle';
+  
+  return `
+    <div class="bg-gray-700/50 rounded-xl p-4 flex justify-between items-center shadow-md hover:bg-gray-700/70 transition-colors cursor-pointer" onclick="verDetalle(${a.id_proyecto || a.id_anteproyecto})">
+      <div class="flex-1">
+        <div class="flex items-center gap-3 mb-2">
+          <!-- ✅ AGREGAR: Icono de estado -->
+          <div class="flex items-center gap-2">
+            <i data-feather="${icono}" class="w-5 h-5 ${estadoColor}"></i>
+            <h3 class="text-lg font-semibold">${a.titulo}</h3>
+          </div>
+          <!-- ✅ AGREGAR: Badge de estado -->
+          <span class="px-3 py-1 text-xs rounded-full ${estadoBg} ${estadoColor} font-medium border border-current/20">
+            ${estado}
+          </span>
+        </div>
         <p class="text-gray-300 text-sm mb-2 max-w-md">${a.descripcion || 'Sin descripción'}</p>
-        <div class="text-xs text-gray-400 flex gap-6">
-          <span>Fecha de creación: ${creacion}</span>
-          <span>Fecha límite: ${limite}</span>
+        <div class="text-xs text-gray-400 flex gap-6 flex-wrap">
+          <!-- ✅ AGREGAR: Iconos para cada dato -->
+          <span class="flex items-center gap-1">
+            <i data-feather="calendar" class="w-3 h-3"></i>
+            Creado: ${fechaCreacion}
+          </span>
+          <span class="flex items-center gap-1">
+            <i data-feather="clock" class="w-3 h-3"></i>
+            Cierre: ${fechaCierre}
+          </span>
+          ${a.organizacion ? 
+            `<span class="flex items-center gap-1">
+              <i data-feather="building" class="w-3 h-3"></i>
+              ${a.organizacion}
+            </span>` : ''
+          }
+          ${a.region ? 
+            `<span class="flex items-center gap-1">
+              <i data-feather="map-pin" class="w-3 h-3"></i>
+              ${a.region}
+            </span>` : ''
+          }
         </div>
       </div>
-     <a href="/pdfs/${a.archivo_pdf}" download title="Descargar PDF" class="bg-green-500 hover:bg-green-600 p-2 rounded-full">
-  <i data-feather="download" class="w-4 h-4 text-white"></i>
-</a>
+      <div class="flex items-center gap-2">
+        <!-- ✅ MEJORAR: Botón de descarga con mejor diseño -->
+        ${a.archivo_pdf ? 
+          `<a href="/pdfs/${a.archivo_pdf}" download title="Descargar PDF" 
+              class="bg-green-500 hover:bg-green-600 p-2 rounded-full transition-colors" onclick="event.stopPropagation()">
+            <i data-feather="download" class="w-4 h-4 text-white"></i>
+          </a>` : 
+          `<div class="bg-gray-600 p-2 rounded-full opacity-50" title="Sin archivo PDF">
+            <i data-feather="file-x" class="w-4 h-4 text-gray-400"></i>
+          </div>`
+        }
+      </div>
     </div>`;
 }
 
 // Cargar cards
+// ✅ MEJORAR: Función cargarLista con filtro por fechas
 function cargarLista() {
   const lista = document.getElementById('listaAnteproyectos');
   const query = document.getElementById('searchInput').value.toLowerCase();
+  
   const filtrado = cache.filter(a => {
-    const coincideEstado = estadoActual === 'abiertos' ? a.estado.toLowerCase() === 'abierto' : a.estado.toLowerCase() === 'cerrado';
+    // ✅ CAMBIAR: Filtrar por fechas en lugar de por campo "estado"
+    const hoy = new Date();
+    const fechaCierreObj = new Date(a.fecha_cierre);
+    const estaActivo = fechaCierreObj >= hoy;
+    
+    const coincideEstado = estadoActual === 'abiertos' ? 
+      estaActivo : // Solo activos (fecha futura)
+      !estaActivo; // Solo finalizados (fecha pasada)
+    
     const coincideSearch = !query || a.titulo.toLowerCase().includes(query);
     return coincideEstado && coincideSearch;
   });
-  lista.innerHTML = filtrado.length ? filtrado.map(cardHtml).join('') : '<p class="text-gray-400">Sin anteproyectos.</p>';
-  feather.replace();
+  
+  // ✅ MEJORAR: Mensaje vacío con iconos
+  const mensajeVacio = estadoActual === 'abiertos' ? 
+    `<div class="text-center py-8">
+      <div class="text-green-400 text-6xl mb-4">
+        <i data-feather="check-circle" class="w-16 h-16 mx-auto"></i>
+      </div>
+      <p class="text-gray-400">No hay convocatorias abiertas</p>
+      <p class="text-sm text-gray-500 mt-2">Las convocatorias con fechas válidas aparecerán aquí</p>
+    </div>` :
+    `<div class="text-center py-8">
+      <div class="text-red-400 text-6xl mb-4">
+        <i data-feather="x-circle" class="w-16 h-16 mx-auto"></i>
+      </div>
+      <p class="text-gray-400">No hay convocatorias cerradas</p>
+      <p class="text-sm text-gray-500 mt-2">Las convocatorias vencidas aparecerán aquí</p>
+    </div>`;
+  
+  lista.innerHTML = filtrado.length ? 
+    filtrado.map(cardHtml).join('') : 
+    mensajeVacio;
+    
+  feather.replace(); // ✅ IMPORTANTE: Renderizar iconos
 }
+
+// ✅ CAMBIAR: Actualizar los nombres de tabs para mayor claridad
+// En el HTML, cambia:
+// <button data-tab="abiertos" class="tab tab-active pb-2">Abiertos</button>
+// <button data-tab="cerrados" class="tab pb-2 text-gray-300">Cerrados</button>
+// Por:
+// <button data-tab="abiertos" class="tab tab-active pb-2">Activos</button>
+// <button data-tab="cerrados" class="tab pb-2 text-gray-300">Finalizados</button>
 
 // Vista detalle
 

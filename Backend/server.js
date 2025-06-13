@@ -20,6 +20,7 @@ import biomosRoutes from './routes/biomos.js';
 import reportesRoutes from './routes/reportes.js';
 import convocatoriasRoutes from './routes/convocatorias.js';
 import anteproyectosRoutes from './routes/anteproyectos.js';
+import nuevoanteproyectosRoutes from './routes/nuevoAnteproyectos.js';
 
 
 dotenv.config();
@@ -55,7 +56,7 @@ app.use('/api/convocatorias', convocatoriasRoutes);
 app.use('/api/anteproyectos', anteproyectosRoutes);
 app.use('/pdfs', express.static(path.join(__dirname, 'Convocatorias_PDF')));
 app.use('/pdfs', express.static(path.join(process.cwd(), 'Convocatorias_PDF')));
-
+app.use('/api/NuevoAnteproyectos', nuevoanteproyectosRoutes);
 
 
 /* ───────── páginas de recuperar contraseña ───────── */
