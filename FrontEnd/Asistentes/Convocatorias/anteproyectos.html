@@ -192,6 +192,8 @@ tabs.forEach(t => t.onclick = () => {
 // API: Corrección de endpoint
 let cache = [];async function fetchAnteproyectos() {
   try {
+    console.log('🔄 Cargando anteproyectos del usuario:', user.id_usuario);
+    
     const r = await fetch('/api/anteproyectos', {
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -200,7 +202,25 @@ let cache = [];async function fetchAnteproyectos() {
       throw new Error(`HTTP ${r.status}`);
     }
 
-    cache = await r.json();
+    const data = await r.json();
+    console.log('📋 Datos recibidos:', data);
+    console.log('👤 Usuario actual ID:', user.id_usuario);
+    
+    // ✅ AGREGAR: Filtrar solo anteproyectos del usuario actual
+    if (Array.isArray(data)) {
+      // Debug del filtro
+      data.forEach(a => {
+        console.log(`📄 Anteproyecto: ${a.titulo} - Owner: ${a.id_usuario_owner} - Usuario: ${user.id_usuario} - Match: ${a.id_usuario_owner == user.id_usuario}`);
+      });
+      
+      // Filtrar solo los del usuario actual
+      cache = data.filter(a => a.id_usuario_owner == user.id_usuario);
+    } else {
+      console.warn('⚠️ Los datos no son un array:', typeof data);
+      cache = [];
+    }
+    
+    console.log(`✅ Anteproyectos filtrados para el usuario: ${cache.length}`);
     cargarLista();
   } catch (err) {
     console.error('[Error fetchAnteproyectos]', err);
@@ -285,6 +305,8 @@ function cargarLista() {
   const lista = document.getElementById('listaAnteproyectos');
   const query = document.getElementById('searchInput').value.toLowerCase();
   
+  console.log('🔍 Filtrando lista:', { estadoActual, totalCache: cache.length, usuario: user.id_usuario });
+  
   const filtrado = cache.filter(a => {
     // ✅ CAMBIAR: Filtrar por fechas en lugar de por campo "estado"
     const hoy = new Date();
@@ -296,8 +318,13 @@ function cargarLista() {
       !estaActivo; // Solo finalizados (fecha pasada)
     
     const coincideSearch = !query || a.titulo.toLowerCase().includes(query);
+    
+    console.log('📋 Anteproyecto:', a.titulo, 'Activo:', estaActivo, 'Coincide:', coincideEstado && coincideSearch);
+    
     return coincideEstado && coincideSearch;
   });
+  
+  console.log('✅ Filtrados finales:', filtrado.length);
   
   // ✅ MEJORAR: Mensaje vacío con iconos
   const mensajeVacio = estadoActual === 'abiertos' ? 
@@ -305,15 +332,15 @@ function cargarLista() {
       <div class="text-green-400 text-6xl mb-4">
         <i data-feather="check-circle" class="w-16 h-16 mx-auto"></i>
       </div>
-      <p class="text-gray-400">No hay convocatorias abiertas</p>
-      <p class="text-sm text-gray-500 mt-2">Las convocatorias con fechas válidas aparecerán aquí</p>
+      <p class="text-gray-400">No tienes anteproyectos activos</p>
+      <p class="text-sm text-gray-500 mt-2">Crea tu primer anteproyecto usando el botón "Crear Nueva Convocatoria"</p>
     </div>` :
     `<div class="text-center py-8">
       <div class="text-red-400 text-6xl mb-4">
         <i data-feather="x-circle" class="w-16 h-16 mx-auto"></i>
       </div>
-      <p class="text-gray-400">No hay convocatorias cerradas</p>
-      <p class="text-sm text-gray-500 mt-2">Las convocatorias vencidas aparecerán aquí</p>
+      <p class="text-gray-400">No tienes anteproyectos finalizados</p>
+      <p class="text-sm text-gray-500 mt-2">Los anteproyectos vencidos aparecerán aquí</p>
     </div>`;
   
   lista.innerHTML = filtrado.length ? 
@@ -340,7 +367,7 @@ location.href = `/Asistentes/Convocatorias/detalle-convocatoria.html?id=${id}`;
 // Filtros y carga inicial
 
 document.getElementById('searchInput').oninput = cargarLista;
-document.getElementById('crearBtn').onclick = () => location.href = '/Asistentes/Convocatorias/convocatorias.html';
+document.getElementById('crearBtn').onclick = () => location.href = '/Asistentes/Convocatorias/NuevoAnteproyecto.html';
 fetchAnteproyectos();
 </script>
 </body>
