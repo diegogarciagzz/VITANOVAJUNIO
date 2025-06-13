@@ -3,62 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mawi – Dashboard</title>
-
-  <!-- TailwindCSS + Feather Icons -->
+  <title>Videojuego – VITA NOVA</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
-
   <style>
-    /* ======== Tema puntual ======== */
-    body {
-      background: #353535;
-      color: #fff;
-      font-family: Inter, system-ui, sans-serif;
+    body{background:#353535;color:#fff;font-family:Inter,system-ui,sans-serif}
+    .sidebar-label{transition:opacity .2s}
+    #sidebar.collapsed .sidebar-label{opacity:0;pointer-events:none}
+    #unityContainer {
+      width: 960px;
+      height: 600px;
+      margin: 32px auto 0 auto;
+      border: 2px solid #ccc;
+      background: #222;
     }
-
-    /* Oculta texto de .sidebar-label cuando <aside> tiene .collapsed */
-    #sidebar.collapsed .sidebar-label {
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s;
-    }
-
-    /* Estilos de las cards centrales */
-    .card {
-      background: #505050;
-      border-radius: 1rem;
-      padding: 1.5rem;
-      width: 260px;
+    .main-content {
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.75rem;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-      transition: background 0.2s;
+      justify-content: flex-start;
+      padding: 2rem 1rem;
     }
-    .card:hover {
-      background: #585858;
-    }
-    .card img {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-    }
-    .card h3 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-    .card p {
-      font-size: 0.875rem;
-      color: #e0e0e0;
-    }
-
-    /* Ajustes de la sidebar */
-    .sidebar-label {
-      transition: opacity 0.2s;
+    @media (max-width: 1000px) {
+      #unityContainer { width: 100vw; height: 60vw; min-height: 300px; }
     }
   </style>
 </head>
@@ -141,7 +109,7 @@
 
         <a
           href="/juego.html"
-          class="flex items-center gap-3 hover:text-green-400 py-2">
+          class="flex items-center gap-3 text-green-400 py-2">
           <i data-feather="play-circle" class="w-4 h-4"></i>
           <span class="sidebar-label">Videojuego</span>
         </a>
@@ -163,95 +131,94 @@
         <span class="text-sm sidebar-label">Soporte</span>
       </button>
     </aside>
-<iframe id="supportIframe" src="/Soporte\soporte.html" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 60%; border: none; background-color: #202020; color: white; padding: 20px; border-radius: 40px 40px 0 0;" ></iframe>
 
-    <!-- ▸ CONTENIDO -------------------------------------------------- -->
-    <main class="flex-1 overflow-y-auto p-8 flex flex-col items-center">
-      <div class="flex flex-wrap justify-center gap-10">
-       <!-- Card 1: Mi Biomo -->
-<a href="/FrontEnd/Asistentes/Biomo/biomo.html" class="card hover:no-underline">
-  <img src="/Assets/IconoBiomo2.png" alt="Mi Biomo" />
-  <h3><br /> Mis Biomos </h3>
-  <p>Conoce todos los datos sobre tus biomonitoreo</p>
-</a>
+    <iframe id="supportIframe" src="/Soporte\soporte.html" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 60%; border: none; background-color: #202020; color: white; padding: 20px; border-radius: 40px 40px 0 0;" ></iframe>
 
-<!-- Card 2: Nuevas Convocatorias -->
-<a href="/Asistentes/Convocatorias/convocatorias.html" class="card hover:no-underline">
-  <img src="/Assets/IconoConvocatorias2.png" alt="Convocatorias" />
-  <h3><br />Nuevas Convocatorias</h3>
-  <p>Participa en nuevas convocatorias y registra los datos de tu anteproyecto.</p>
-</a>
-
-<!-- Card 3: Explorador Anteproyectos -->
-<a href="/Asistentes/Convocatorias/anteproyectos.html" class="card hover:no-underline">
-  <img src="/Assets/IconoAnteproyectos2.png" alt="Anteproyectos" />
-  <h3><br />Explorador de Convocatorias</h3>
-  <p>Interactúa con convocatorias abiertas y formula anteproyectos.</p>
-</a>
-      </div>
-
-    
+    <!-- ✅ CONTENIDO PRINCIPAL (conservado) -->
+    <main class="main-content">
+      <h2 class="text-2xl font-bold text-white mb-4">¡Bienvenido al videojuego de VITA NOVA!</h2>
+      <div id="unityContainer"></div>
     </main>
   </div>
 
-  <!-- ▸ JS ----------------------------------------------------------- -->
+  <!-- ✅ SCRIPTS ACTUALIZADOS -->
   <script>
-    // 1) Procesar feather-icons
     feather.replace();
 
-    // 2) Contraer / expandir sidebar
+    // ✅ Sidebar toggle
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('toggleSide');
-    const arrow = toggleBtn.querySelector('svg');
-    toggleBtn.onclick = () => {
-      sidebar.classList.toggle('w-64');
-      sidebar.classList.toggle('w-16');
-      sidebar.classList.toggle('collapsed');
-      arrow.classList.toggle('rotate-180');
+    if (toggleBtn) {
+      toggleBtn.onclick = () => {
+        sidebar.classList.toggle('w-64');
+        sidebar.classList.toggle('w-16');
+        sidebar.classList.toggle('collapsed');
+        const icon = toggleBtn.querySelector('svg');
+        icon.setAttribute('data-feather', sidebar.classList.contains('collapsed') ? 'chevron-right' : 'chevron-left');
+        feather.replace();
+      };
+    }
+
+    // ✅ Verificación de autenticación
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!token || !user.id_usuario) {
+      document.body.innerHTML = '<h1 class="text-center mt-20 text-3xl">Mawi</h1><p class="text-center text-gray-400">Inicia sesión.</p>';
+      setTimeout(() => window.location.href = '/index.html', 2000);
+      throw new Error('No auth');
+    }
+
+    // ✅ Datos del usuario en navbar
+    document.getElementById('userName').textContent = user.nombre || 'Usuario';
+    const foto = localStorage.getItem('foto_perfil') || '/Assets/avatar-placeholder.png';
+    document.getElementById('avatar').src = foto.startsWith('/') ? foto : '/' + foto;
+
+    // ✅ Botones de navegación
+    document.getElementById('profileBtn').onclick = () => location.href = '/Perfil/perfil.html';
+    
+    // ✅ Mostrar/ocultar iframe de soporte
+    document.getElementById('supportBtn').onclick = function() {
+      const iframe = document.getElementById('supportIframe');
+      iframe.style.display = iframe.style.display === 'none' ? 'block' : 'none';
     };
-// 1) Carga nombre del usuario
-const user = JSON.parse(localStorage.getItem('user') || '{}');
-if (user.nombre) {
-  document.getElementById('userName').textContent = user.nombre;
-}
+    
+    document.getElementById('logoutBtn').onclick = () => {
+      sessionStorage.clear();
+      localStorage.clear();
+      window.location.href = '/index.html';
+    };
 
-// 2) Carga foto de perfil
-let fotoRuta = localStorage.getItem('foto_perfil') || '';
-if (fotoRuta) {
-  // Si la ruta no empieza con "/", agrégalo
-  if (!fotoRuta.startsWith('/')) {
-    fotoRuta = '/' + fotoRuta;
-  }
-  document.getElementById('avatar').src = fotoRuta;
-} else {
-  // Si no existe foto en localStorage, uso el placeholder fijo
-  document.getElementById('avatar').src = '/Assets/avatar-placeholder.png';
-}
-    // 4) Cerrar sesión
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-      logoutBtn.addEventListener('click', () => {
-        sessionStorage.clear();
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-        localStorage.removeItem('foto_perfil');
-        // Redirijo a la página de inicio
-        location.href = '/index.html';
-      });
+    // ✅ Cargar datos del usuario (conservado)
+    async function fetchUserData() {
+      try {
+        const res = await fetch('/api/users/me', {
+          headers: { Authorization: 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error('No se pudo cargar el usuario');
+        const userData = await res.json();
+        document.title = `Videojuego – ${userData.nombre || 'VITA NOVA'}`;
+      } catch (err) {
+        console.error('Error de autenticación:', err);
+        // No redirigir automáticamente, solo log del error
+      }
     }
+    fetchUserData();
 
-
-    // 6) Redirigir a “Perfil” si hacen clic en #profileBtn
-    const btnProfile = document.getElementById('profileBtn');
-    if (btnProfile) {
-      btnProfile.addEventListener('click', () => {
-        location.href = '/Perfil/perfil.html';
-      });
-    }
-    // Mostrar el iframe de soporte
-  document.getElementById('supportBtn').onclick = function() {
-    document.getElementById('supportIframe').style.display = 'block';
-  };
+    // ✅ Cargar el juego automáticamente (conservado)
+    window.onload = () => {
+      const unityContainer = document.getElementById("unityContainer");
+      // Solo agregar iframe si no está presente
+      if (!document.getElementById("unityIframe")) {
+        const iframe = document.createElement("iframe");
+        iframe.id = "unityIframe";
+        iframe.src = "UnityGame/index.html";
+        iframe.width = "960";
+        iframe.height = "600";
+        iframe.style.border = "none";
+        iframe.allowFullscreen = true;
+        unityContainer.appendChild(iframe);
+      }
+    };
   </script>
 </body>
 </html>

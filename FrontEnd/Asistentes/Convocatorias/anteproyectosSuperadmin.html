@@ -318,22 +318,9 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <button onclick="editarAnteproyecto(${a.id_anteproyecto})"
-                class="bg-blue-600 hover:bg-blue-700 p-2 rounded-full"
-                title="Editar">
-          <i data-feather="edit-2" class="w-4 h-4 text-white"></i>
-        </button>
-        ${a.archivo_pdf?`
-        <a href="/Convocatorias_PDF/${a.archivo_pdf}" download
-           class="bg-green-500 hover:bg-green-600 p-2 rounded-full"
-           title="Descargar PDF">
-          <i data-feather="download" class="w-4 h-4 text-white"></i>
-        </a>`:''}
-        <button onclick="eliminarAnteproyecto(${a.id_anteproyecto})"
-                class="bg-red-600 hover:bg-red-700 p-2 rounded-full"
-                title="Eliminar">
-          <i data-feather="trash-2" class="w-4 h-4 text-white"></i>
-        </button>
+        
+    
+    
       </div>
     </div>`;
   }
