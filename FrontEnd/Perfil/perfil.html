@@ -87,15 +87,17 @@
         <a
           href="/Asistentes\Convocatorias\anteproyectos.html"
           class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="folder-plus" class="w-4 h-4"></i>
-          <span class="sidebar-label">Explorador Anteproyectos</span>
+          <i data-feather="layers" class="w-4 h-4"></i>
+          <span class="sidebar-label">Explorador Convocatorias</span>
         </a>
- <a
+
+         <a
           href="/Asistentes\Convocatorias\NuevoAnteproyecto.html"
           class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="folder-plus" class="w-4 h-4"></i>
           <span class="sidebar-label"> Anteproyectos </span>
         </a>
+
         <a
           href="/FrontEnd/Asistentes/Convocatorias/chat.html"
           class="flex items-center gap-3 hover:text-green-400 py-2">
@@ -127,6 +129,8 @@
         <span class="text-sm sidebar-label">Soporte</span>
       </button>
     </aside>
+<iframe id="supportIframe" src="/Soporte\soporte.html" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 60%; border: none; background-color: #202020; color: white; padding: 20px; border-radius: 40px 40px 0 0;" ></iframe>
+
     <!-- ─── CONTENIDO DE PERFIL ─── -->
     <main class="flex-1 overflow-y-auto flex justify-center">
       <div class="perfil-card">
@@ -223,7 +227,7 @@
           </div>
         </form>
 
-        <!-- Botón “Cambiar contraseña” y “Soporte” -->
+        <!-- Botón “Cambiar contraseña” -->
         <a
           href="/Perfil/perfil-cambiarcontraseña.html"
           class="btn-cambiar-pass mt-4"
@@ -232,14 +236,6 @@
           <i data-feather="lock" class="w-4 h-4"></i>
           Cambiar contraseña
         </a>
-
-        <button class="btn-soporte mt-4" id="centerSupport">
-          <i data-feather="phone" class="w-4 h-4"></i>
-          Contacta con el soporte
-        </button>
-      </div>
-    </main>
-  </div>
 
   <!-- ─── JS PARA PERFIL ─── -->
   <script>
@@ -473,12 +469,11 @@
     /*───────────────────────────────────*
      * 6) Botones Soporte y Perfil       *
      *───────────────────────────────────*/
-    document.getElementById('supportBtn').addEventListener('click', () => {
-      location.href = 'mailto:soporte@mawi.com';
-    });
-    document.getElementById('centerSupport').addEventListener('click', () => {
-      location.href = 'mailto:soporte@mawi.com';
-    });
+    // Mostrar el iframe de soporte
+  document.getElementById('supportBtn').onclick = function() {
+    document.getElementById('supportIframe').style.display = 'block';
+  };
+
     document.getElementById('profileBtn').addEventListener('click', () => {
       location.href = '/Perfil/perfil.html';
     });

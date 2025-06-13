@@ -115,6 +115,7 @@
         <span class="text-sm sidebar-label">Soporte</span>
       </button>
     </aside>
+<iframe id="supportIframe" src="/Soporte\soporte.html" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 60%; border: none; background-color: #202020; color: white; padding: 20px; border-radius: 40px 40px 0 0;" ></iframe>
 
 
     <!-- ▸ CONTENIDO -->
@@ -177,8 +178,10 @@ document.getElementById('logoutBtn').onclick = () => {
   location.href = '/index.html';
 };
 document.getElementById('profileBtn').onclick = () => location.href = '/Perfil/perfil.html';
-document.getElementById('supportBtn').onclick = () => location.href = 'mailto:soporte@mawi.com';
-
+    // Mostrar el iframe de soporte
+  document.getElementById('supportBtn').onclick = function() {
+    document.getElementById('supportIframe').style.display = 'block';
+  };
 // Tabs
 let estadoActual = 'abiertos';
 const tabs = document.querySelectorAll('.tab');
@@ -367,7 +370,7 @@ location.href = `/Asistentes/Convocatorias/detalle-convocatoria.html?id=${id}`;
 // Filtros y carga inicial
 
 document.getElementById('searchInput').oninput = cargarLista;
-document.getElementById('crearBtn').onclick = () => location.href = '/Asistentes/Convocatorias/NuevoAnteproyecto.html';
+document.getElementById('crearBtn').onclick = () => location.href = '/Asistentes/Convocatorias/convocatorias.html';
 fetchAnteproyectos();
 </script>
 </body>

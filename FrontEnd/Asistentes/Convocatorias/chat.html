@@ -84,11 +84,15 @@
         <span class="sidebar-label">Cerrar sesión</span>
       </button>
 
-      <button id="supportBtn" class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500">
+      <!-- Botón Soporte -->
+      <button
+        id="supportBtn"
+        class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500">
         <i data-feather="phone" class="w-4 h-4 text-green-500"></i>
         <span class="text-sm sidebar-label">Soporte</span>
       </button>
     </aside>
+<iframe id="supportIframe" src="/Soporte\soporte.html" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 60%; border: none; background-color: #202020; color: white; padding: 20px; border-radius: 40px 40px 0 0;" ></iframe>
 
     <!-- CONTENIDO -->
     <main class="flex-1 overflow-y-auto p-8">
@@ -155,8 +159,11 @@ const supportBtn = document.getElementById('supportBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 
 profileBtn.onclick = () => location.href = '/Perfil/perfil.html';
-supportBtn.onclick = () => location.href = 'mailto:soporte@mawi.com';
-logoutBtn.onclick = () => { 
+    // Mostrar el iframe de soporte
+  document.getElementById('supportBtn').onclick = function() {
+    document.getElementById('supportIframe').style.display = 'block';
+  };
+  logoutBtn.onclick = () => { 
   sessionStorage.clear(); 
   localStorage.clear(); 
   location.href = '/index.html'; 

@@ -50,17 +50,22 @@
           <i data-feather="bar-chart-2" class="w-4 h-4"></i>
           <span class="sidebar-label">Número de Biomos</span>
         </a>
-        <a href="/Views/super/users.html" class="flex items-center gap-3 hover:text-green-400 py-2">
-          <i data-feather="user-check" class="w-4 h-4"></i>
-          <span class="sidebar-label">Gestión de Usuarios</span>
+          </a>
+                <a href="/Asistentes\Convocatorias\convocatoriasSuperadmin.html" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="folder-plus" class="w-4 h-4"></i>
+          <span class="sidebar-label">Número de Convocatorias</span>
         </a>
-        <a href="#" class="flex items-center gap-3 hover:text-green-400 py-2">
+        <a href="/Asistentes/Convocatorias/anteproyectosSuperadmin.html" class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="file-text" class="w-4 h-4"></i>
           <span class="sidebar-label">Número de Anteproyectos</span>
-        </a>
-        <a href="/Asistentes/Convocatorias/chatsuper.html" class="flex items-center gap-3 hover:text-green-400 py-2 text-green-400">
+
+        <a href="/Asistentes\Convocatorias\chatsuper.html" class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="message-circle" class="w-4 h-4"></i>
           <span class="sidebar-label">Chatbot</span>
+        </a>
+        <a href="/Views/super/users.html" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="users" class="w-4 h-4"></i>
+          <span class="sidebar-label">Gestión de Usuarios</span>
         </a>
         <a href="/Views/super/pending.html" class="flex items-center gap-3 hover:text-green-400 py-2">
           <i data-feather="clock" class="w-4 h-4"></i>
@@ -73,12 +78,15 @@
         </button>
       </nav>
 
-      <button id="supportBtn"
-              class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500">
+      <!-- Botón Soporte -->
+      <button
+        id="supportBtn"
+        class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500">
         <i data-feather="phone" class="w-4 h-4 text-green-500"></i>
-        <span class="text-sm sidebar-label">Contacta con el soporte</span>
+        <span class="text-sm sidebar-label">Soporte</span>
       </button>
     </aside>
+<iframe id="supportIframe" src="/Soporte\soporte.html" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 60%; border: none; background-color: #202020; color: white; padding: 20px; border-radius: 40px 40px 0 0;" ></iframe>
 
     <!-- CONTENIDO -->
     <main class="flex-1 overflow-y-auto p-8">
@@ -137,14 +145,14 @@ toggleSide.onclick = function () {
 
 /* 2. Perfil y soporte */
 const profileBtn = document.getElementById('profileBtn');
-const supportBtn = document.getElementById('supportBtn');
 profileBtn.addEventListener('click', () =>
   location.href = '/Perfil/perfilSuper.html'
 );
-supportBtn.addEventListener('click', () =>
-  location.href = 'mailto:soporte@mawi.com'
-);
-
+    // Mostrar el iframe de soporte
+  document.getElementById('supportBtn').onclick = function() {
+    document.getElementById('supportIframe').style.display = 'block';
+  };
+  
 /* 3. Logout */
 document.getElementById('logoutBtn').addEventListener('click', () => {
   sessionStorage.clear();
