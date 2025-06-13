@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1024" />
+  <title>Videojuego – VITA NOVA</title>
+  <link rel="stylesheet" href="/Estilos/dashboard.css" />
+  <link rel="stylesheet" href="/Estilos/styles.css" />
+  <style>
+    #unityContainer {
+      width: 960px;
+      height: 600px;
+      margin: 32px auto 0 auto;
+      border: 2px solid #ccc;
+      background: #222;
+    }
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem 1rem;
+    }
+    @media (max-width: 1000px) {
+      #unityContainer { width: 100vw; height: 60vw; min-height: 300px; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-900">
+
+  <!-- NAVBAR -->
+  <header class="bg-gray-800 flex items-center justify-between h-14 px-6">
+    <div class="flex items-center gap-2">
+      <img src="/Assets/OjoMawi.png" alt="Logo" style="height:28px;width:40px;">
+      <span class="font-semibold text-lg text-white">VITA NOVA</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div id="profileBtn" class="flex items-center gap-2 cursor-pointer hover:opacity-80">
+        <span id="userName" class="text-sm text-white">Usuario</span>
+        <img id="avatar" src="/Assets/avatar-placeholder.png"
+             class="w-8 h-8 rounded-full object-cover border-2 border-gray-700" />
+      </div>
+      <button id="logoutBtn"
+        class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition">
+        <i data-feather="log-out" class="w-4 h-4"></i>
+        Salir
+      </button>
+      <button id="supportBtn"
+        class="flex items-center gap-2 bg-gray-700 hover:bg-green-700 text-white px-3 py-1 rounded transition">
+        <i data-feather="phone" class="w-4 h-4"></i>
+        Soporte
+      </button>
+    </div>
+  </header>
+
+  <div class="flex flex-grow overflow-hidden">
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="bg-gray-900 w-64 flex flex-col transition-all duration-200">
+      <button id="toggleSide" class="self-end mt-3 mr-2 p-1 rounded hover:bg-gray-700">
+        <i data-feather="chevron-left" class="w-4 h-4 text-gray-300"></i>
+      </button>
+      <nav class="flex flex-col gap-6 mt-6 px-6 text-sm">
+        <a href="/dashboard.html" class="flex items-center gap-3 hover:text-green-400 py-2">
+          <i data-feather="home" class="w-4 h-4"></i>
+          <span class="sidebar-label">Menú principal</span>
+        </a>
+        <a href="/juego.html" class="flex items-center gap-3 text-green-400 py-2">
+          <i data-feather="play-circle" class="w-4 h-4"></i>
+          <span class="sidebar-label">Videojuego</span>
+        </a>
+      </nav>
+      <button id="logoutBtnSidebar"
+        class="flex items-center gap-3 hover:text-red-400 py-2 px-6 mt-6">
+        <i data-feather="log-out" class="w-4 h-4"></i>
+        <span class="sidebar-label">Cerrar sesión</span>
+      </button>
+      <button id="supportBtnSidebar"
+        class="mt-auto m-4 flex items-center gap-2 bg-gray-800 rounded px-4 py-2 hover:ring-2 hover:ring-green-500">
+        <i data-feather="phone" class="w-4 h-4 text-green-500"></i>
+        <span class="text-sm sidebar-label">Soporte</span>
+      </button>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <h2 class="text-2xl font-bold text-white mb-4">¡Bienvenido al videojuego de VITA NOVA!</h2>
+      <div id="unityContainer"></div>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script>
+    feather.replace();
+
+    // Sidebar toggle
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggleSide');
+    const arrow = toggleBtn.querySelector('svg');
+    toggleBtn.onclick = () => {
+      sidebar.classList.toggle('w-64');
+      sidebar.classList.toggle('w-16');
+      sidebar.classList.toggle('collapsed');
+      arrow.classList.toggle('rotate-180');
+    };
+
+    // Auth check
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!token || !user.id_usuario) {
+      window.location.href = '/index.html';
+    }
+
+    // Navbar user info
+    document.getElementById('userName').textContent = user.nombre || 'Usuario';
+    const foto = localStorage.getItem('foto_perfil') || '';
+    document.getElementById('avatar').src = foto.startsWith('/') ? foto : '/' + foto;
+
+    // Profile and support buttons
+    document.getElementById('profileBtn').onclick = () => location.href = '/Perfil/perfil.html';
+    document.getElementById('supportBtn').onclick = () => location.href = 'mailto:soporte@mawi.com';
+
+    // Sidebar buttons
+    document.getElementById('logoutBtnSidebar').onclick = () => {
+      sessionStorage.clear();
+      localStorage.clear();
+      window.location.href = '/index.html';
+    };
+    document.getElementById('supportBtnSidebar').onclick = () => {
+      window.location.href = 'mailto:soporte@mawi.com';
+    };
+
+    // Logout
+    document.getElementById('logoutBtn').onclick = () => {
+      sessionStorage.clear();
+      localStorage.clear();
+      window.location.href = '/index.html';
+    };
+
+    // Load user data (optional, for future use)
+    async function fetchUserData() {
+      try {
+        const res = await fetch('/api/users/me', {
+          headers: { Authorization: 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error('No se pudo cargar el usuario');
+        const userData = await res.json();
+        document.title = `Videojuego – ${userData.nombre || 'VITA NOVA'}`;
+      } catch (err) {
+        alert('Error de autenticación. Inicia sesión de nuevo.');
+        localStorage.clear();
+        window.location.href = '/index.html';
+      }
+    }
+    fetchUserData();
+
+    // Load the game automatically
+    window.onload = () => {
+      const unityContainer = document.getElementById("unityContainer");
+      // Only add iframe if not already present
+      if (!document.getElementById("unityIframe")) {
+        const iframe = document.createElement("iframe");
+        iframe.id = "unityIframe";
+        iframe.src = "UnityGame/index.html";
+        iframe.width = "960";
+        iframe.height = "600";
+        iframe.style.border = "none";
+        iframe.allowFullscreen = true;
+        unityContainer.appendChild(iframe);
+      }
+    };
+  </script>
+</body>
+</html>
